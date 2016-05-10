@@ -180,11 +180,11 @@
 
       <div class="body-wrap">
   
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Centos安全加固总结" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/05/08/hello-world/" class="article-date">
-  	<time datetime="2016-05-08T08:40:19.890Z" itemprop="datePublished">2016-05-08</time>
+      <a href="/2016/05/10/Centos安全加固总结/" class="article-date">
+  	<time datetime="2016-05-10T14:01:00.159Z" itemprop="datePublished">2016-05-10</time>
 </a>
     </div>
   
@@ -193,28 +193,59 @@
       <input type="hidden" class="isFancy" />
     
     
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/05/08/hello-world/">Hello World</a>
-    </h1>
-  
-
-      </header>
-      
-    
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+        <p>摘自<a href="https://github.com/luyg24/IT_security/blob/master/centos_security.txt" target="_blank" rel="external">https://github.com/luyg24/IT_security/blob/master/centos_security.txt</a></p>
+<p>#Centos安全加固</p>
+<blockquote>
+<ul>
+<li>要更新的软件：<br>bash，openssl，glibc</li>
+</ul>
+</blockquote>
+<h1 id="1-配置密码不允许重复次数和复杂度"><a href="#1-配置密码不允许重复次数和复杂度" class="headerlink" title="1. 配置密码不允许重复次数和复杂度"></a>1. 配置密码不允许重复次数和复杂度</h1><pre>
+#编辑/etc/pam.d/system-auth文件，找到以下行：
+password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_authtok
+#后面添加  remember=3  代表不允许使用之前3次用过的密码
+</pre>
+
+<pre>
+#找到以下行
+password    requisite     pam_cracklib.so try_first_pass retry=3 type=
+
+修改为：
+password    requisite     pam_cracklib.so try_first_pass retry=6 ucredit=-1 lcredit=-1 dcredit=-1 ocredit=-1
+#retry=N 重试N次后返回密码错误
+#difok=N 新密码必需与旧密码不同的位数
+#dcredit=N N>=0表示密码最多N个数字，反之最少N个数字
+#lcredit=N 小写字母个数
+#ucredit=N 小写字母个数
+#ccredit=N 小写字母个数
+#minclass=N 密码组成(大/小字母,数字,特殊字符)
+#root不受此限制，普通用户登录后改密码才受限制
+</pre>
+
+<h1 id="2-禁止root登录"><a href="#2-禁止root登录" class="headerlink" title="2. 禁止root登录"></a>2. 禁止root登录</h1><pre>
+#更改/etc/ssh/sshd_config，之后重启sshd
+PermitRootLogin yes
+改成：PermitRootLogin no
+</pre>
+
+<h1 id="3-修改密码长度和过期时间："><a href="#3-修改密码长度和过期时间：" class="headerlink" title="3.修改密码长度和过期时间："></a>3.修改密码长度和过期时间：</h1><pre>
+#改 /etc/login.defs
+PASS_MAX_DAYS   90
+PASS_MIN_DAYS   1
+PASS_MIN_LEN    9
+PASS_WARN_AGE   7
+解释：
+# PASS_MAX_DAYS   密码使用的最长期限
+# PASS_MIN_DAYS   密码允许更改的最短期限
+# PASS_MIN_LEN    能接受的密码最短长度
+# PASS_WARN_AGE   密码过期之前的提醒天数
+</pre>
+
+<blockquote>
+<p>其他内容待更新……</p>
+</blockquote>
 
       
     </div>

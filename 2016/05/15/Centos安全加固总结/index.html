@@ -8,38 +8,41 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="Centos安全加固
 
+
 要更新的软件：bash，openssl，glibc
 
 
-1. 配置密码不允许重复次数和复杂度
+配置密码不允许重复次数和复杂度
 #编辑/etc/pam.d/system-auth文件，找到以下行：
 password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_authtok
-#后面添加  remember=3  代">
+#后面添加  remember=3  代表不">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Kelvin's Blog">
 <meta property="og:url" content="http://kevin0431.github.io/2016/05/15/Centos安全加固总结/index.html">
 <meta property="og:site_name" content="Kelvin's Blog">
 <meta property="og:description" content="Centos安全加固
 
+
 要更新的软件：bash，openssl，glibc
 
 
-1. 配置密码不允许重复次数和复杂度
+配置密码不允许重复次数和复杂度
 #编辑/etc/pam.d/system-auth文件，找到以下行：
 password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_authtok
-#后面添加  remember=3  代">
-<meta property="og:updated_time" content="2016-05-15T03:34:41.248Z">
+#后面添加  remember=3  代表不">
+<meta property="og:updated_time" content="2016-05-15T03:37:34.810Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kelvin's Blog">
 <meta name="twitter:description" content="Centos安全加固
 
+
 要更新的软件：bash，openssl，glibc
 
 
-1. 配置密码不允许重复次数和复杂度
+配置密码不允许重复次数和复杂度
 #编辑/etc/pam.d/system-auth文件，找到以下行：
 password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_authtok
-#后面添加  remember=3  代">
+#后面添加  remember=3  代表不">
   
   
     <link rel="icon" href="/img/avatar.png">
@@ -112,6 +115,8 @@ password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_au
 				        
 							<li><a href="/archives">所有文章</a></li>
 				        
+							<li><a href="/tags">标签云</a></li>
+				        
 						</ul>
 					</nav>
 					<nav class="header-nav">
@@ -172,6 +177,8 @@ password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_au
 		        
 					<li><a href="/archives">所有文章</a></li>
 		        
+					<li><a href="/tags">标签云</a></li>
+		        
 		        <div class="clearfix"></div>
 				</ul>
 			</nav>
@@ -190,7 +197,7 @@ password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_au
   
     <div class="article-meta">
       <a href="/2016/05/15/Centos安全加固总结/" class="article-date">
-  	<time datetime="2016-05-15T03:34:41.250Z" itemprop="datePublished">2016-05-15</time>
+  	<time datetime="2016-05-15T03:37:34.812Z" itemprop="datePublished">2016-05-15</time>
 </a>
     </div>
   
@@ -204,15 +211,16 @@ password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_au
 	
 	<div id="toc" class="toc-article">
 		<strong class="toc-title">文章目录</strong>
-	<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Centos安全加固"><span class="toc-number">1.</span> <span class="toc-text">Centos安全加固</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-配置密码不允许重复次数和复杂度"><span class="toc-number">1.1.</span> <span class="toc-text">1. 配置密码不允许重复次数和复杂度</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-禁止root登录"><span class="toc-number">1.2.</span> <span class="toc-text">2. 禁止root登录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-修改密码长度和过期时间："><span class="toc-number">1.3.</span> <span class="toc-text">3.修改密码长度和过期时间：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-设置连续失败次数和失败锁定时间"><span class="toc-number">1.4.</span> <span class="toc-text">4. 设置连续失败次数和失败锁定时间</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-umask降权，设置历史命令数"><span class="toc-number">1.5.</span> <span class="toc-text">5. umask降权，设置历史命令数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-修改ssh-banner"><span class="toc-number">1.6.</span> <span class="toc-text">6. 修改ssh banner</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-修改ssh访问控制"><span class="toc-number">1.7.</span> <span class="toc-text">7. 修改ssh访问控制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-空闲超时退出"><span class="toc-number">1.8.</span> <span class="toc-text">8. 空闲超时退出</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-su限制"><span class="toc-number">1.9.</span> <span class="toc-text">9. su限制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-取消CTRL-ALT-DELETE"><span class="toc-number">1.10.</span> <span class="toc-text">10. 取消CTRL+ALT+DELETE</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-修改motd，登陆系统后的提示信息"><span class="toc-number">1.11.</span> <span class="toc-text">11. 修改motd，登陆系统后的提示信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12-禁用不用的用户和组"><span class="toc-number">1.12.</span> <span class="toc-text">12. 禁用不用的用户和组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#13-禁用没用的服务"><span class="toc-number">1.13.</span> <span class="toc-text">13. 禁用没用的服务</span></a></li></ol></li></ol>
+	<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#配置密码不允许重复次数和复杂度"><span class="toc-number">1.</span> <span class="toc-text">配置密码不允许重复次数和复杂度</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#禁止root登录"><span class="toc-number">2.</span> <span class="toc-text">禁止root登录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#修改密码长度和过期时间："><span class="toc-number">3.</span> <span class="toc-text">修改密码长度和过期时间：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#设置连续失败次数和失败锁定时间"><span class="toc-number">4.</span> <span class="toc-text">设置连续失败次数和失败锁定时间</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#umask降权，设置历史命令数"><span class="toc-number">5.</span> <span class="toc-text">umask降权，设置历史命令数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#修改ssh-banner"><span class="toc-number">6.</span> <span class="toc-text">修改ssh banner</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#修改ssh访问控制"><span class="toc-number">7.</span> <span class="toc-text">修改ssh访问控制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#空闲超时退出"><span class="toc-number">8.</span> <span class="toc-text">空闲超时退出</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#su限制"><span class="toc-number">9.</span> <span class="toc-text">su限制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#取消CTRL-ALT-DELETE"><span class="toc-number">10.</span> <span class="toc-text">取消CTRL+ALT+DELETE</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#修改motd，登陆系统后的提示信息"><span class="toc-number">11.</span> <span class="toc-text">修改motd，登陆系统后的提示信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#禁用不用的用户和组"><span class="toc-number">12.</span> <span class="toc-text">禁用不用的用户和组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#禁用没用的服务"><span class="toc-number">13.</span> <span class="toc-text">禁用没用的服务</span></a></li></ol>
 	</div>
 	
-        <h1 id="Centos安全加固"><a href="#Centos安全加固" class="headerlink" title="Centos安全加固"></a>Centos安全加固</h1><blockquote>
+        <p>Centos安全加固</p>
+<blockquote>
 <ul>
 <li>要更新的软件：<br>bash，openssl，glibc</li>
 </ul>
 </blockquote>
-<h2 id="1-配置密码不允许重复次数和复杂度"><a href="#1-配置密码不允许重复次数和复杂度" class="headerlink" title="1. 配置密码不允许重复次数和复杂度"></a>1. 配置密码不允许重复次数和复杂度</h2><pre>
+<h2 id="配置密码不允许重复次数和复杂度"><a href="#配置密码不允许重复次数和复杂度" class="headerlink" title="配置密码不允许重复次数和复杂度"></a>配置密码不允许重复次数和复杂度</h2><pre>
 #编辑/etc/pam.d/system-auth文件，找到以下行：
 password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_authtok
 #后面添加  remember=3  代表不允许使用之前3次用过的密码
@@ -234,13 +242,13 @@ password    requisite     pam_cracklib.so try_first_pass retry=6 ucredit=-1 lcre
 #root不受此限制，普通用户登录后改密码才受限制
 </pre>
 
-<h2 id="2-禁止root登录"><a href="#2-禁止root登录" class="headerlink" title="2. 禁止root登录"></a>2. 禁止root登录</h2><pre>
+<h2 id="禁止root登录"><a href="#禁止root登录" class="headerlink" title="禁止root登录"></a>禁止root登录</h2><pre>
 #更改/etc/ssh/sshd_config，之后重启sshd
 PermitRootLogin yes
 改成：PermitRootLogin no
 </pre>
 
-<h2 id="3-修改密码长度和过期时间："><a href="#3-修改密码长度和过期时间：" class="headerlink" title="3.修改密码长度和过期时间："></a>3.修改密码长度和过期时间：</h2><pre>
+<h2 id="修改密码长度和过期时间："><a href="#修改密码长度和过期时间：" class="headerlink" title="修改密码长度和过期时间："></a>修改密码长度和过期时间：</h2><pre>
 #改 /etc/login.defs
 PASS_MAX_DAYS   90
 PASS_MIN_DAYS   1
@@ -253,22 +261,22 @@ PASS_WARN_AGE   7
 # PASS_WARN_AGE   密码过期之前的提醒天数
 </pre>
 
-<h2 id="4-设置连续失败次数和失败锁定时间"><a href="#4-设置连续失败次数和失败锁定时间" class="headerlink" title="4. 设置连续失败次数和失败锁定时间"></a>4. 设置连续失败次数和失败锁定时间</h2><p>修改(/etc/pam.d/system-auth和/etc/pam.d/sshd)分别在开始位置加入以下内容：</p>
+<h2 id="设置连续失败次数和失败锁定时间"><a href="#设置连续失败次数和失败锁定时间" class="headerlink" title="设置连续失败次数和失败锁定时间"></a>设置连续失败次数和失败锁定时间</h2><p>修改(/etc/pam.d/system-auth和/etc/pam.d/sshd)分别在开始位置加入以下内容：</p>
 <pre>
 auth    required    pam_tally2.so    deny=6    unlock_time=300    even_deny_root root_unlock_time=120
 #最大失败次数6次，超过6次锁定300s，root用户锁定120s
 #两个文件中"required pam_tally2.so deny"要删掉
 </pre>
 
-<h2 id="5-umask降权，设置历史命令数"><a href="#5-umask降权，设置历史命令数" class="headerlink" title="5. umask降权，设置历史命令数"></a>5. umask降权，设置历史命令数</h2><p>默认uid&gt;199的umask是022，uid&lt;199的umask是022，可以在/etc/profile里新加一行”umask 027”，修改HISSIZE=100，即最大历史命令是100</p>
-<h2 id="6-修改ssh-banner"><a href="#6-修改ssh-banner" class="headerlink" title="6. 修改ssh banner"></a>6. 修改ssh banner</h2><p>自定义banner文件：echo “Only Gomeholdings users can login” &gt; /etc/ssh/gomebanner<br>再修改/etc/ssh/sshd_config 新增”Banner /etc/ssh/gomebanner”</p>
-<h2 id="7-修改ssh访问控制"><a href="#7-修改ssh访问控制" class="headerlink" title="7. 修改ssh访问控制"></a>7. 修改ssh访问控制</h2><p>/etc/hosts.allow文件<br>如： sshd:10.35.0.0/255.255.0.0<br>禁止访问的文件 /etc/hosts.deny    sshd:all<br>hosts.allow文件优先</p>
-<h2 id="8-空闲超时退出"><a href="#8-空闲超时退出" class="headerlink" title="8. 空闲超时退出"></a>8. 空闲超时退出</h2><p>改/etc/profile 追加 TMOUT=300</p>
-<h2 id="9-su限制"><a href="#9-su限制" class="headerlink" title="9. su限制"></a>9. su限制</h2><p>修改/etc/login.defs 追加”SU_WHEEL_ONLY yes”<br>修改/etc/pam.d/su<br>将”auth        required    pam_wheel.so use_uid”取消注释<br>将要配置su权限的用户加到wheel组：<br>usermod -G wheel work</p>
-<h2 id="10-取消CTRL-ALT-DELETE"><a href="#10-取消CTRL-ALT-DELETE" class="headerlink" title="10. 取消CTRL+ALT+DELETE"></a>10. 取消CTRL+ALT+DELETE</h2><p>修改/etc/init/control-alt-delete.conf，注释掉以下内容：<br>start on control-alt-delete<br>exec /sbin/shutdown -r now “Control-Alt-Delete pressed”</p>
+<h2 id="umask降权，设置历史命令数"><a href="#umask降权，设置历史命令数" class="headerlink" title="umask降权，设置历史命令数"></a>umask降权，设置历史命令数</h2><p>默认uid&gt;199的umask是022，uid&lt;199的umask是022，可以在/etc/profile里新加一行”umask 027”，修改HISSIZE=100，即最大历史命令是100</p>
+<h2 id="修改ssh-banner"><a href="#修改ssh-banner" class="headerlink" title="修改ssh banner"></a>修改ssh banner</h2><p>自定义banner文件：echo “Only Gomeholdings users can login” &gt; /etc/ssh/gomebanner<br>再修改/etc/ssh/sshd_config 新增”Banner /etc/ssh/gomebanner”</p>
+<h2 id="修改ssh访问控制"><a href="#修改ssh访问控制" class="headerlink" title="修改ssh访问控制"></a>修改ssh访问控制</h2><p>/etc/hosts.allow文件<br>如： sshd:10.35.0.0/255.255.0.0<br>禁止访问的文件 /etc/hosts.deny    sshd:all<br>hosts.allow文件优先</p>
+<h2 id="空闲超时退出"><a href="#空闲超时退出" class="headerlink" title="空闲超时退出"></a>空闲超时退出</h2><p>改/etc/profile 追加 TMOUT=300</p>
+<h2 id="su限制"><a href="#su限制" class="headerlink" title="su限制"></a>su限制</h2><p>修改/etc/login.defs 追加”SU_WHEEL_ONLY yes”<br>修改/etc/pam.d/su<br>将”auth        required    pam_wheel.so use_uid”取消注释<br>将要配置su权限的用户加到wheel组：<br>usermod -G wheel work</p>
+<h2 id="取消CTRL-ALT-DELETE"><a href="#取消CTRL-ALT-DELETE" class="headerlink" title="取消CTRL+ALT+DELETE"></a>取消CTRL+ALT+DELETE</h2><p>修改/etc/init/control-alt-delete.conf，注释掉以下内容：<br>start on control-alt-delete<br>exec /sbin/shutdown -r now “Control-Alt-Delete pressed”</p>
 <p>对于Centos7只需：rm -rf /usr/lib/systemd/ctrl-alt-del.target</p>
-<h2 id="11-修改motd，登陆系统后的提示信息"><a href="#11-修改motd，登陆系统后的提示信息" class="headerlink" title="11. 修改motd，登陆系统后的提示信息"></a>11. 修改motd，登陆系统后的提示信息</h2><p>echo “Illegal users are not allowed to login, Only authorized users can login” &gt; /etc/motd<br>当用显示器连接linux主机的时候，屏幕会显示系统版本等相关信息，可以将他取消掉，将/etc/issue和/etc/issue.net改名即可</p>
-<h2 id="12-禁用不用的用户和组"><a href="#12-禁用不用的用户和组" class="headerlink" title="12. 禁用不用的用户和组"></a>12. 禁用不用的用户和组</h2><pre>
+<h2 id="修改motd，登陆系统后的提示信息"><a href="#修改motd，登陆系统后的提示信息" class="headerlink" title="修改motd，登陆系统后的提示信息"></a>修改motd，登陆系统后的提示信息</h2><p>echo “Illegal users are not allowed to login, Only authorized users can login” &gt; /etc/motd<br>当用显示器连接linux主机的时候，屏幕会显示系统版本等相关信息，可以将他取消掉，将/etc/issue和/etc/issue.net改名即可</p>
+<h2 id="禁用不用的用户和组"><a href="#禁用不用的用户和组" class="headerlink" title="禁用不用的用户和组"></a>禁用不用的用户和组</h2><pre>
 改/etc/passwd
 #adm:x:3:4:adm:/var/adm:/sbin/nologin
 #lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin
@@ -290,7 +298,7 @@ auth    required    pam_tally2.so    deny=6    unlock_time=300    even_deny_root
 #dip:x:40:
 </pre>
 
-<h2 id="13-禁用没用的服务"><a href="#13-禁用没用的服务" class="headerlink" title="13. 禁用没用的服务"></a>13. 禁用没用的服务</h2><pre>
+<h2 id="禁用没用的服务"><a href="#禁用没用的服务" class="headerlink" title="禁用没用的服务"></a>禁用没用的服务</h2><pre>
 chkconfig acpid off
 chkconfig anacron off
 chkconfig auditd off

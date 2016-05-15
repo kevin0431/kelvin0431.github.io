@@ -1,155 +1,81 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="google-site-verification" content="" />
   
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <title>Kelvin&#39;s Blog</title>
+  <meta name="author" content="Kelvin">
+   <meta name="description" content="Things need record">
+  
+
+  
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="#Centos安全加固
-
-
-要更新的软件：bash，openssl，glibc
-
-
-1. 配置密码不允许重复次数和复杂度
-#编辑/etc/pam.d/system-auth文件，找到以下行：
-password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_authtok
-#后面添加  remember=3">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Kelvin's Blog">
-<meta property="og:url" content="http://kevin0431.github.io/2016/05/15/Centos安全加固总结/index.html">
-<meta property="og:site_name" content="Kelvin's Blog">
-<meta property="og:description" content="#Centos安全加固
-
-
-要更新的软件：bash，openssl，glibc
-
-
-1. 配置密码不允许重复次数和复杂度
-#编辑/etc/pam.d/system-auth文件，找到以下行：
-password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_authtok
-#后面添加  remember=3">
-<meta property="og:updated_time" content="2016-05-15T02:11:19.000Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Kelvin's Blog">
-<meta name="twitter:description" content="#Centos安全加固
-
-
-要更新的软件：bash，openssl，glibc
-
-
-1. 配置密码不允许重复次数和复杂度
-#编辑/etc/pam.d/system-auth文件，找到以下行：
-password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_authtok
-#后面添加  remember=3">
+  <meta property="og:site_name" content="Kelvin&#39;s Blog"/>
+ <meta property="og:image" content="undefined"/>
   
-  
-  <link rel="stylesheet" href="/css/style.css">
+  <link rel="alternate" href="/atom.xml" title="Kelvin&#39;s Blog" type="application/atom+xml">
+  <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="http://7xs4ih.com1.z0.glb.clouddn.com/plnV5.css">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
 </head>
 
 <body>
-  <div id="container">
-    <div class="left-col">
-    <div class="overlay"></div>
-<div class="intrude-less">
-	<header id="header" class="inner">
-		<a href="/" class="profilepic">
-			
-			<img src="undefined" class="js-avatar" style="width: 100%;height: 100%;opacity: 1;">
-			
-		</a>
-
-		<hgroup>
-		  <h1 class="header-author"><a href="/">Kelvin</a></h1>
-		</hgroup>
-
-		
-		<p class="header-subtitle">Carpe Diem</p>
-		
-
-		
-
-		<div class="switch-area">
-			<div class="switch-wrap">
-				<section class="switch-part switch-part1">
-					<nav class="header-menu">
-						<ul>
-						
-						</ul>
-					</nav>
-					<nav class="header-nav">
-						<div class="social">
-							
-						</div>
-					</nav>
-				</section>
-				
-				
-				
-				
-
-				
-			</div>
-		</div>
-	</header>				
-</div>
-
+  <div id="main">
+    <div class="behind">
+      <div class="back">
+        <a href="/" class="black-color"><i class="fa fa-times-circle-o"></i></a>
+      </div>
+      <div class="description">
+        &nbsp;Carpe Diem
+      </div>
     </div>
-    <div class="mid-col">
-      <nav id="mobile-nav">
-  	<div class="overlay">
-  		<div class="slider-trigger"></div>
-  		<h1 class="header-author js-mobile-header hide">Kelvin</h1>
-  	</div>
-	<div class="intrude-less">
-		<header id="header" class="inner">
-			<div class="profilepic">
-			
-				<img src="undefined" class="js-avatar" style="width: 100%;height: 100%;opacity: 1;">
-			
-			</div>
-			<hgroup>
-			  <h1 class="header-author">Kelvin</h1>
-			</hgroup>
-			
-			<p class="header-subtitle">Carpe Diem</p>
-			
-			<nav class="header-menu">
-				<ul>
-				
-		        <div class="clearfix"></div>
-				</ul>
-			</nav>
-			<nav class="header-nav">
-				<div class="social">
-					
-				</div>
-			</nav>
-		</header>				
-	</div>
-</nav>
-
-      <div class="body-wrap"><article id="post-Centos安全加固总结" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/05/15/Centos安全加固总结/" class="article-date">
-  	<time datetime="2016-05-15T02:13:03.797Z" itemprop="datePublished">2016-05-15</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
+    <div class="container">
       
-	
-	<div id="toc" class="toc-article">
-		<strong class="toc-title">文章目录</strong>
-	<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-配置密码不允许重复次数和复杂度"><span class="toc-number">1.</span> <span class="toc-text">1. 配置密码不允许重复次数和复杂度</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-禁止root登录"><span class="toc-number">2.</span> <span class="toc-text">2. 禁止root登录</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-修改密码长度和过期时间："><span class="toc-number">3.</span> <span class="toc-text">3.修改密码长度和过期时间：</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-设置连续失败次数和失败锁定时间"><span class="toc-number">4.</span> <span class="toc-text">4. 设置连续失败次数和失败锁定时间</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-umask降权，设置历史命令数"><span class="toc-number">5.</span> <span class="toc-text">5. umask降权，设置历史命令数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-修改ssh-banner"><span class="toc-number">6.</span> <span class="toc-text">6. 修改ssh banner</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-修改ssh访问控制"><span class="toc-number">7.</span> <span class="toc-text">7. 修改ssh访问控制</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-空闲超时退出"><span class="toc-number">8.</span> <span class="toc-text">8. 空闲超时退出</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-su限制"><span class="toc-number">9.</span> <span class="toc-text">9. su限制</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#10-取消CTRL-ALT-DELETE"><span class="toc-number">10.</span> <span class="toc-text">10. 取消CTRL+ALT+DELETE</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#11-修改motd，登陆系统后的提示信息"><span class="toc-number">11.</span> <span class="toc-text">11. 修改motd，登陆系统后的提示信息</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#12-禁用不用的用户和组"><span class="toc-number">12.</span> <span class="toc-text">12. 禁用不用的用户和组</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#13-禁用没用的服务"><span class="toc-number">13.</span> <span class="toc-text">13. 禁用没用的服务</span></a></li></ol>
-	</div>
-	
-        <p>#Centos安全加固</p>
+
+  <article class="standard post">
+    <div class="title">
+      
+  
+    <h1 class="page-title center">
+        
+    </h1>
+  
+
+
+    </div>
+    <div class="meta center">
+      
+<time datetime="2016-05-15T02:13:03.797Z">
+  <i class="fa fa-calendar"></i>&nbsp;
+  2016-05-15
+</time>
+
+
+
+
+
+
+
+    </div>
+    <hr>
+    <div class="picture-container">
+      
+    </div>
+    <p>#Centos安全加固</p>
 <blockquote>
 <ul>
 <li>要更新的软件：<br>bash，openssl，glibc</li>
@@ -267,59 +193,84 @@ chkconfig NetworkManager off
 
 
 
-      
+
+  </article>
+
+
+
+<div id="disqus_thread"></div>
+<script>
+
+var disqus_config = function () {
+this.page.url = 'http://kevin0431.github.io/2016/05/15/Centos安全加固总结/index.html';
+this.page.identifier = undefined;
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+
+s.src = '//yourdisqustoken.disqus.com/embed.js';
+
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+
+
     </div>
-    
   </div>
-  
-    
-  
-</article>
+  <footer class="page-footer"><div class="clearfix">
+</div>
+<div class="right-foot container">
 
-
-
-
-
-
-
+    <a class="backtop wow fadeIn animated" href="#top" >
+        <i class="fa fa-arrow-right"></i>
+    </a>
+    © Kelvin 2015-2016
+    <a href="https://github.com/gaoryrt/hexo-theme-pln">
+        Theme Pln
+    </a>
 
 </div>
-      <footer id="footer">
-  <div class="outer">
-    <div id="footer-info">
-    	<div class="footer-left">
-    		&copy; 2016 Kelvin
-    	</div>
-      	<div class="footer-right">
-      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
-      	</div>
-    </div>
-  </div>
+<div class="clearfix">
+</div>
 </footer>
-    </div>
-    
+  <script src="//cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
+<script type="text/javascript">
 
-<script>
-	var yiliaConfig = {
-		fancybox: undefined,
-		mathjax: undefined,
-		animate: undefined,
-		isHome: false,
-		isPost: true,
-		isArchive: false,
-		isTag: false,
-		isCategory: false,
-		open_in_new: undefined
-	}
+// comments below to disable loading animation
+function revealOnScroll() {
+  var scrolled = $(window).scrollTop();
+  $(".excerpt, .index-title, .index-meta, p").each(function() {
+    var current = $(this),
+      height = $(window).outerHeight(),
+      offsetTop = current.offset().top;
+    (scrolled + height + 50 > offsetTop) ? current.addClass("animation"):'';
+  });
+}
+$(window).on("scroll", revealOnScroll);
+$(document).ready(revealOnScroll)
+
+// disqus scripts
+
+
+// dropdown scripts
+$(".dropdown").click(function(event) {
+  var current = $(this);
+  event.stopPropagation();
+  $(current).children(".dropdown-content")[($(current).children(".dropdown-content").hasClass("open"))?'removeClass':'addClass']("open")
+});
+$(document).click(function(){
+    $(".dropdown-content").removeClass("open");
+})
+
+// back to top scripts
+$("a[href='#top']").click(function() {
+  $("html, body").animate({ scrollTop: 0 }, 500);
+  return false;
+});
 </script>
-<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
-<script src="/js/main.js"></script>
 
-
-
-
-
-
-  </div>
 </body>
 </html>

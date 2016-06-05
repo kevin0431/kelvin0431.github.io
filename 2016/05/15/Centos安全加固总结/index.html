@@ -3,45 +3,36 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Kelvin&#39;s Blog</title>
+  <title>CentOS安装加固总结 | Kelvin&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Centos安全加固
-
-
-要更新的软件：bash，openssl，glibc
+  <meta name="description" content="要更新的软件：bash，openssl，glibc
 
 
 配置密码不允许重复次数和复杂度
 #编辑/etc/pam.d/system-auth文件，找到以下行：
 password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_authtok
-#后面添加  remember=3  代表不">
+#后面添加  remember=3  代表不允许使用之前3次用过的">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Kelvin's Blog">
+<meta property="og:title" content="CentOS安装加固总结">
 <meta property="og:url" content="http://kevin0431.github.io/2016/05/15/Centos安全加固总结/index.html">
 <meta property="og:site_name" content="Kelvin's Blog">
-<meta property="og:description" content="Centos安全加固
-
-
-要更新的软件：bash，openssl，glibc
+<meta property="og:description" content="要更新的软件：bash，openssl，glibc
 
 
 配置密码不允许重复次数和复杂度
 #编辑/etc/pam.d/system-auth文件，找到以下行：
 password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_authtok
-#后面添加  remember=3  代表不">
-<meta property="og:updated_time" content="2016-05-15T03:37:34.810Z">
+#后面添加  remember=3  代表不允许使用之前3次用过的">
+<meta property="og:updated_time" content="2016-06-05T14:27:00.302Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Kelvin's Blog">
-<meta name="twitter:description" content="Centos安全加固
-
-
-要更新的软件：bash，openssl，glibc
+<meta name="twitter:title" content="CentOS安装加固总结">
+<meta name="twitter:description" content="要更新的软件：bash，openssl，glibc
 
 
 配置密码不允许重复次数和复杂度
 #编辑/etc/pam.d/system-auth文件，找到以下行：
 password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_authtok
-#后面添加  remember=3  代表不">
+#后面添加  remember=3  代表不允许使用之前3次用过的">
   
     <link rel="alternative" href="/atom.xml" title="Kelvin&#39;s Blog" type="application/atom+xml">
   
@@ -189,7 +180,7 @@ password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_au
                 
                 <section class="switch-part switch-part2">
                     <div class="widget tagcloud" id="js-tagcloud">
-                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hadoop/">Hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Namenode/">Namenode</a></li></ul>
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hadoop/">Hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Namenode/">Namenode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/安全/">安全</a></li></ul>
                     </div>
                 </section>
                 
@@ -272,7 +263,7 @@ password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_au
   
     <div class="article-meta">
       <a href="/2016/05/15/Centos安全加固总结/" class="article-date">
-      <time datetime="2016-05-15T03:37:34.812Z" itemprop="datePublished">2016-05-15</time>
+      <time datetime="2016-05-14T16:00:00.000Z" itemprop="datePublished">2016-05-15</time>
 </a>
     </div>
   
@@ -281,11 +272,32 @@ password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_au
       <input type="hidden" class="isFancy" />
     
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      CentOS安装加固总结
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OS/">OS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/安全/">安全</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>Centos安全加固</p>
-<blockquote>
+        <blockquote>
 <ul>
 <li>要更新的软件：<br>bash，openssl，glibc</li>
 </ul>
@@ -409,12 +421,12 @@ chkconfig NetworkManager off
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2016/05/15/Centos安全加固总结/"></a></p>
+        <p><span>本文标题:</span><a href="/2016/05/15/Centos安全加固总结/">CentOS安装加固总结</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">Kelvin</a></p>
-        <p><span>发布时间:</span>2016-05-15, 11:37:34</p>
-        <p><span>最后更新:</span>2016-05-15, 11:37:34</p>
+        <p><span>发布时间:</span>2016-05-15, 00:00:00</p>
+        <p><span>最后更新:</span>2016-06-05, 22:27:00</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2016/05/15/Centos安全加固总结/" title="">http://kevin0431.github.io/2016/05/15/Centos安全加固总结/</a>
+            <span>原始链接:</span><a class="post-url" href="/2016/05/15/Centos安全加固总结/" title="CentOS安装加固总结">http://kevin0431.github.io/2016/05/15/Centos安全加固总结/</a>
             <span class="copy-path" data-clipboard-text="原文: http://kevin0431.github.io/2016/05/15/Centos安全加固总结/　　作者: Kelvin" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
@@ -498,7 +510,7 @@ chkconfig NetworkManager off
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"　| Kelvin's Blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"CentOS安装加固总结　| Kelvin's Blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -514,7 +526,7 @@ chkconfig NetworkManager off
     
       <div class="duoshuo" id="comments">
     <!-- 多说评论框 start -->
-    <div class="ds-thread" data-thread-key="2016/05/15/Centos安全加固总结/" data-title="" data-url="http://kevin0431.github.io/2016/05/15/Centos安全加固总结/"></div>
+    <div class="ds-thread" data-thread-key="2016/05/15/Centos安全加固总结/" data-title="CentOS安装加固总结" data-url="http://kevin0431.github.io/2016/05/15/Centos安全加固总结/"></div>
     <!-- 多说评论框 end -->
     <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
     <script type="text/javascript">
@@ -550,7 +562,7 @@ chkconfig NetworkManager off
         
     </div>
 
-    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/06/05/Hadoop重新做HA/">Hadoop重新做HA</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/15/Centos安全加固总结/">Centos安全加固总结</a></li></ul>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/06/05/Hadoop重新做HA/">Hadoop重新做HA</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/15/Centos安全加固总结/">CentOS安装加固总结</a></li></ul>
 
 
 

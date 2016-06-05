@@ -3,18 +3,21 @@
 <head>
   <meta charset="utf-8">
   
-  <title>标签云 | Kelvin&#39;s Blog</title>
+  <title>Hadoop重新做HA | Kelvin&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Things need record">
-<meta property="og:type" content="website">
-<meta property="og:title" content="标签云">
-<meta property="og:url" content="http://kevin0431.github.io/tags/index.html">
+  <meta name="description" content="1、首先在Active上执行以下命令，手动备份整个name目录：12345678#关闭故障自动控制器hadoop-daemon.sh stop zkfs#进入安全模式hdfs dfsadmin -safemode enter#刷新editslog到fsimagehdfs dfsadmin -saveNamespace
+2、在Standby上备份整个name和journal目录，在执行：12hado">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hadoop重新做HA">
+<meta property="og:url" content="http://kevin0431.github.io/2016/06/05/Hadoop重新做HA/index.html">
 <meta property="og:site_name" content="Kelvin's Blog">
-<meta property="og:description" content="Things need record">
-<meta property="og:updated_time" content="2016-05-15T02:42:24.174Z">
+<meta property="og:description" content="1、首先在Active上执行以下命令，手动备份整个name目录：12345678#关闭故障自动控制器hadoop-daemon.sh stop zkfs#进入安全模式hdfs dfsadmin -safemode enter#刷新editslog到fsimagehdfs dfsadmin -saveNamespace
+2、在Standby上备份整个name和journal目录，在执行：12hado">
+<meta property="og:updated_time" content="2016-06-05T14:20:51.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="标签云">
-<meta name="twitter:description" content="Things need record">
+<meta name="twitter:title" content="Hadoop重新做HA">
+<meta name="twitter:description" content="1、首先在Active上执行以下命令，手动备份整个name目录：12345678#关闭故障自动控制器hadoop-daemon.sh stop zkfs#进入安全模式hdfs dfsadmin -safemode enter#刷新editslog到fsimagehdfs dfsadmin -saveNamespace
+2、在Standby上备份整个name和journal目录，在执行：12hado">
   
     <link rel="alternative" href="/atom.xml" title="Kelvin&#39;s Blog" type="application/atom+xml">
   
@@ -46,7 +49,7 @@
           fancybox: true,
           animate: true,
           isHome: false,
-          isPost: false,
+          isPost: true,
           isArchive: false,
           isTag: false,
           isCategory: false,
@@ -241,11 +244,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="page-undefined" class="article article-type-page" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-Hadoop重新做HA" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/tags/index.html" class="article-date">
-      <time datetime="2016-05-14T16:00:00.000Z" itemprop="datePublished">2016-05-15</time>
+      <a href="/2016/06/05/Hadoop重新做HA/" class="article-date">
+      <time datetime="2016-06-04T16:00:00.000Z" itemprop="datePublished">2016-06-05</time>
 </a>
     </div>
   
@@ -258,7 +261,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      标签云
+      Hadoop重新做HA
     </h1>
   
 
@@ -268,6 +271,10 @@
         
 
         
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hadoop/">Hadoop</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Namenode/">Namenode</a></li></ul>
+    </div>
+
         <div class="clearfix"></div>
       </div>
       
@@ -275,96 +282,90 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-              <style>
-    .article-meta { display: none; }
-    #container .article .article-title { padding-right: 0; }
-    .article-header {
-        padding: 0;
-        padding-top: 26px;
-        border-left: none;
-        text-align: center;
-    }
-    .article-header:hover { border-left: none; }
-    .article-title { font-size: 1.6em }
-    .article-entry hr { margin: 0;}
-    .article-meta,
-    #container .article-info-post.article-info { display: none;}
-    #container .article .article-title { padding: 0; }
-</style>
+        <h2 id="1、首先在Active上执行以下命令，手动备份整个name目录："><a href="#1、首先在Active上执行以下命令，手动备份整个name目录：" class="headerlink" title="1、首先在Active上执行以下命令，手动备份整个name目录："></a>1、首先在Active上执行以下命令，手动备份整个name目录：</h2><figure class="highlight vala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#关闭故障自动控制器</span></span><br><span class="line">hadoop-daemon.sh stop zkfs</span><br><span class="line"></span><br><span class="line"><span class="meta">#进入安全模式</span></span><br><span class="line">hdfs dfsadmin -safemode enter</span><br><span class="line"></span><br><span class="line"><span class="meta">#刷新editslog到fsimage</span></span><br><span class="line">hdfs dfsadmin -saveNamespace</span><br></pre></td></tr></table></figure>
+<h2 id="2、在Standby上备份整个name和journal目录，在执行："><a href="#2、在Standby上备份整个name和journal目录，在执行：" class="headerlink" title="2、在Standby上备份整个name和journal目录，在执行："></a>2、在Standby上备份整个name和journal目录，在执行：</h2><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hadoop-daemon<span class="selector-class">.sh</span> stop zkfc</span><br><span class="line">hdfs namenode -bootstrapStandby</span><br></pre></td></tr></table></figure>
+<p>若报以下错：<br><strong>FATAL ha.BootstrapStandby: Unable to read transaction ids 10-100 from the configured shared edits storage qjournal://1.1.1.1:8485;1.1.1.2:8485/sec-hdfs-cluster. Please copy these logs into the shared edits storage or call saveNamespace on the active node.<br>Error: Gap in transactions. Expected to be able to read up until at least txid 10 but unable to find any edit logs containing txid 10</strong></p>
+<p>需要将Active整个name目录复制到Standby，然后启动namenode：<br><figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scp -r /data/hadoop/name <span class="variable">$standby_ip</span><span class="symbol">:/data/hadoop</span></span><br><span class="line">hadoop-daemon.sh start namenode</span><br></pre></td></tr></table></figure></p>
 
-
-    <!-- Tag Cloud Page -->
-    <hr>
-<br>
-
-
-<p class="count"></p>
-
-<div class="tags">
-    <li><a href="/tags/Hadoop/" style="font-size: 16px; color: #808080">Hadoop</a></li> <li><a href="/tags/Namenode/" style="font-size: 16px; color: #808080">Namenode</a></li>
-</div>
-<style>
-    .category-list li{
-        display: inline-block;
-        margin: 0 1em .5em 0;
-        padding: 4px;
-        border: 1px solid lightgray;
-        font-size: 1.2rem;
-    }
-    .category-list a { color: gray; }
-    .category-list-item:hover a {
-        color: gray;
-        text-decoration: none;
-    }
-    .category-list-count {
-        margin-left: 2px;
-        font-size: .9rem;
-    }
-    .article-entry ul li:before{ display: none; }
-    .article-inner { text-align: center; }
-    .tags {
-        max-width: 42em;
-        margin: 2em auto;
-        margin-top: 0em;
-    }
-    .tags a {
-        margin-right: 1em;
-        line-height: 65px;
-        border-bottom: 1px solid gray;
-        white-space: nowrap;
-        transition: border-bottom .5s;
-    }
-    .tags a:hover {
-        border-bottom: 3px dotted gray;
-        text-decoration: none;
-    }
-    #count > span {
-        margin: auto .2em;
-        font-weight: bold;
-    }
-</style>
-
-<!-- Count tags and categories -->
-<p id="count">
-        已有<span><script>document.write($(".category-list-item").length)</script></span>个分类，
-        共计<span><script>document.write($(".tags > a").length)</script></span>个标签
-</p>
-<script>
-    $('#count').appendTo('.count');
-</script>
-
-          
-        
       
     </div>
     
   </div>
   
     
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2016/06/05/Hadoop重新做HA/">Hadoop重新做HA</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">Kelvin</a></p>
+        <p><span>发布时间:</span>2016-06-05, 00:00:00</p>
+        <p><span>最后更新:</span>2016-06-05, 22:20:51</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2016/06/05/Hadoop重新做HA/" title="Hadoop重新做HA">http://kevin0431.github.io/2016/06/05/Hadoop重新做HA/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://kevin0431.github.io/2016/06/05/Hadoop重新做HA/　　作者: Kelvin" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
 
+
+
+    <nav id="article-nav">
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2016/05/15/Centos安全加固总结/">
+                    
+                </a>
+            </div>
+        
+    </nav>
 
   
 </article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1、首先在Active上执行以下命令，手动备份整个name目录："><span class="toc-number">1.</span> <span class="toc-text">1、首先在Active上执行以下命令，手动备份整个name目录：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2、在Standby上备份整个name和journal目录，在执行："><span class="toc-number">2.</span> <span class="toc-text">2、在Standby上备份整个name和journal目录，在执行：</span></a></li></ol>
+</div>
+<style>
+    .left-col .switch-btn {
+        display: none;
+    }
+    .left-col .switch-area {
+        display: none;
+    }
+</style>
+
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+            $(".switch-btn, .switch-area").fadeOut(300);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+            $(".switch-btn, .switch-area").fadeIn(500);
+        }
+    })
+
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+        $(".switch-btn, .switch-area").show();
+    }
+</script>
+
+
 
 
 
@@ -382,7 +383,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"标签云　| Kelvin's Blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"Hadoop重新做HA　| Kelvin's Blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -395,6 +396,46 @@
 
 
 
+    
+      <div class="duoshuo" id="comments">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="2016/06/05/Hadoop重新做HA/" data-title="Hadoop重新做HA" data-url="http://kevin0431.github.io/2016/06/05/Hadoop重新做HA/"></div>
+    <!-- 多说评论框 end -->
+    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:"kevin0431"};
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0] 
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+    <!-- 多说公共JS代码 end -->
+</div>
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2016/05/15/Centos安全加固总结/" title="下一篇: ">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/06/05/Hadoop重新做HA/">Hadoop重新做HA</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/15/Centos安全加固总结/">Centos安全加固总结</a></li></ul>
 
 
 

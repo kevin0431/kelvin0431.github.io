@@ -166,7 +166,7 @@
                 
                 <section class="switch-part switch-part2">
                     <div class="widget tagcloud" id="js-tagcloud">
-                        
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hadoop/">Hadoop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Namenode/">Namenode</a></li></ul>
                     </div>
                 </section>
                 
@@ -246,6 +246,67 @@
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-Hadoop重新做HA" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/06/05/Hadoop重新做HA/" class="article-date">
+      <time datetime="2016-06-04T16:00:00.000Z" itemprop="datePublished">2016-06-05</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/06/05/Hadoop重新做HA/">Hadoop重新做HA</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h2 id="1、首先在Active上执行以下命令，手动备份整个name目录："><a href="#1、首先在Active上执行以下命令，手动备份整个name目录：" class="headerlink" title="1、首先在Active上执行以下命令，手动备份整个name目录："></a>1、首先在Active上执行以下命令，手动备份整个name目录：</h2><figure class="highlight vala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#关闭故障自动控制器</span></span><br><span class="line">hadoop-daemon.sh stop zkfs</span><br><span class="line"></span><br><span class="line"><span class="meta">#进入安全模式</span></span><br><span class="line">hdfs dfsadmin -safemode enter</span><br><span class="line"></span><br><span class="line"><span class="meta">#刷新editslog到fsimage</span></span><br><span class="line">hdfs dfsadmin -saveNamespace</span><br></pre></td></tr></table></figure>
+<h2 id="2、在Standby上备份整个name和journal目录，在执行："><a href="#2、在Standby上备份整个name和journal目录，在执行：" class="headerlink" title="2、在Standby上备份整个name和journal目录，在执行："></a>2、在Standby上备份整个name和journal目录，在执行：</h2><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hadoop-daemon<span class="selector-class">.sh</span> stop zkfc</span><br><span class="line">hdfs namenode -bootstrapStandby</span><br></pre></td></tr></table></figure>
+<p>若报以下错：<br><strong>FATAL ha.BootstrapStandby: Unable to read transaction ids 10-100 from the configured shared edits storage qjournal://1.1.1.1:8485;1.1.1.2:8485/sec-hdfs-cluster. Please copy these logs into the shared edits storage or call saveNamespace on the active node.<br>Error: Gap in transactions. Expected to be able to read up until at least txid 10 but unable to find any edit logs containing txid 10</strong></p>
+<p>需要将Active整个name目录复制到Standby，然后启动namenode：<br><figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scp -r /data/hadoop/name <span class="variable">$standby_ip</span><span class="symbol">:/data/hadoop</span></span><br><span class="line">hadoop-daemon.sh start namenode</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hadoop/">Hadoop</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Namenode/">Namenode</a></li></ul>
+    </div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-Centos安全加固总结" class="article article-type-post" itemscope itemprop="blogPost">
   

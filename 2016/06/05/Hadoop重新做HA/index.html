@@ -1,11 +1,21 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8">
-  
-  <title>Hadoop重新做HA | Kelvin&#39;s Blog</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="1、首先在Active上执行以下命令，手动备份整个name目录：12345678#关闭故障自动控制器hadoop-daemon.sh stop zkfs#进入安全模式hdfs dfsadmin -safemode enter#刷新editslog到fsimagehdfs dfsadmin -saveNamespace
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="Kelvin" />
+
+
+
+<meta name="description" content="1、首先在Active上执行以下命令，手动备份整个name目录：12345678#关闭故障自动控制器hadoop-daemon.sh stop zkfs#进入安全模式hdfs dfsadmin -safemode enter#刷新editslog到fsimagehdfs dfsadmin -saveNamespace
 2、在Standby上备份整个name和journal目录，在执行：12hado">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hadoop重新做HA">
@@ -18,65 +28,82 @@
 <meta name="twitter:title" content="Hadoop重新做HA">
 <meta name="twitter:description" content="1、首先在Active上执行以下命令，手动备份整个name目录：12345678#关闭故障自动控制器hadoop-daemon.sh stop zkfs#进入安全模式hdfs dfsadmin -safemode enter#刷新editslog到fsimagehdfs dfsadmin -saveNamespace
 2、在Standby上备份整个name和journal目录，在执行：12hado">
-  
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
     <link rel="alternative" href="/atom.xml" title="Kelvin&#39;s Blog" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="/favicon.png">
-  
-  
-      <link href="//cdn.bootcss.com/animate.css/3.5.0/animate.min.css" rel="stylesheet">
-  
-  
-      <link href="//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css" rel="stylesheet">
-  
-  
-      <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
-      <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
-  
-  <link rel="stylesheet" href="/css/style.css">
-  
-  <link href="//cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-  
-  
-      <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
-  
-  <script src="//cdn.bootcss.com/jquery/1.9.1/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/clipboard.js/1.5.9/clipboard.min.js"></script>
-  <script>
-      var yiliaConfig = {
-          fancybox: true,
-          animate: true,
-          isHome: false,
-          isPost: true,
-          isArchive: false,
-          isTag: false,
-          isCategory: false,
-          open_in_new: false,
-          fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
-          scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.0.9/scrollreveal.min.js"
-      }
-  </script>
 
-  
-      <script>
-          yiliaConfig.rootUrl = "/";
-      </script>
-  
 
-  
-  
-      <script>
-          var _hmt = _hmt || [];
-          (function() {
-              var hm = document.createElement("script");
-              hm.src = "//hm.baidu.com/hm.js?f5e7d99d04d58b71cd5cf6d3c63fdd4a";
-              var s = document.getElementsByTagName("script")[0]; 
-              s.parentNode.insertBefore(hm, s);
-          })();
-      </script>
-  
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>Hadoop重新做HA | Kelvin&#39;s Blog</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        open_in_new: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-575adc207d6dec11"></script>
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?f5e7d99d04d58b71cd5cf6d3c63fdd4a";
+            var s = document.getElementsByTagName("script")[0]; 
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
 </head>
 <body>
   <div id="container">
@@ -94,7 +121,15 @@
         
         <p class="header-subtitle">Carpe Diem</p>
         
-                
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" results="0" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
 
 
         
@@ -149,9 +184,9 @@
                         
                             <li><a href="/archives/">所有文章</a></li>
                         
-                            <li><a href="/tags/">标签</a></li>
+                            <li><a href="/tags/">标签云</a></li>
                         
-                            <li><a href="/about">关于我</a></li>
+                            <li><a href="/about/">关于我</a></li>
                         
                         </ul>
                     </nav>
@@ -161,6 +196,8 @@
                                 <a class="fa Email" target="_blank" href="mailto:sunkai0431@gmail.com" title="Email"></a>
                             
                                 <a class="fa GitHub" target="_blank" href="https://github.com/kevin0431" title="GitHub"></a>
+                            
+                                <a class="fa V2EX" target="_blank" href="http://www.v2ex.com/member/kelvin0431" title="V2EX"></a>
                             
                                 <a class="fa SegmentFault" target="_blank" href="https://segmentfault.com/u/Kelvin0431" title="SegmentFault"></a>
                             
@@ -186,7 +223,11 @@
                     
                       <a target="_blank" class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
                     
-                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://github.com/">GitHub</a>
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                      <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.v2ex.com/">V2ex</a>
                     
                     </div>
                 </section>
@@ -228,9 +269,9 @@
                 
                     <li><a href="/archives/">所有文章</a></li>
                 
-                    <li><a href="/tags/">标签</a></li>
+                    <li><a href="/tags/">标签云</a></li>
                 
-                    <li><a href="/about">关于我</a></li>
+                    <li><a href="/about/">关于我</a></li>
                 
                 <div class="clearfix"></div>
                 </ul>
@@ -241,6 +282,8 @@
                                 <a class="fa Email" target="_blank" href="mailto:sunkai0431@gmail.com" title="Email"></a>
                             
                                 <a class="fa GitHub" target="_blank" href="https://github.com/kevin0431" title="GitHub"></a>
+                            
+                                <a class="fa V2EX" target="_blank" href="http://www.v2ex.com/member/kelvin0431" title="V2EX"></a>
                             
                                 <a class="fa SegmentFault" target="_blank" href="https://segmentfault.com/u/Kelvin0431" title="SegmentFault"></a>
                             
@@ -339,43 +382,17 @@
     <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1、首先在Active上执行以下命令，手动备份整个name目录："><span class="toc-number">1.</span> <span class="toc-text">1、首先在Active上执行以下命令，手动备份整个name目录：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2、在Standby上备份整个name和journal目录，在执行："><span class="toc-number">2.</span> <span class="toc-text">2、在Standby上备份整个name和journal目录，在执行：</span></a></li></ol>
 </div>
 <style>
-    .left-col .switch-btn {
-        display: none;
-    }
+    .left-col .switch-btn,
     .left-col .switch-area {
         display: none;
     }
 </style>
 
 <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
 <script>
-    var valueHide = "隐藏目录";
-    var valueShow = "显示目录";
-
-    if ($(".left-col").is(":hidden")) {
-        $("#tocButton").attr("value", valueShow);
-    }
-
-    $("#tocButton").click(function() {
-        if ($("#toc").is(":hidden")) {
-            $("#tocButton").attr("value", valueHide);
-            $("#toc").slideDown(320);
-            $(".switch-btn, .switch-area").fadeOut(300);
-        }
-        else {
-            $("#tocButton").attr("value", valueShow);
-            $("#toc").slideUp(350);
-            $(".switch-btn, .switch-area").fadeIn(500);
-        }
-    })
-
-    if ($(".toc").length < 1) {
-        $("#toc, #tocButton").hide();
-        $(".switch-btn, .switch-area").show();
-    }
+    yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
 </script>
-
-
 
 
 
@@ -398,6 +415,8 @@
     
 
     
+        <div class="addthis_sharing_toolbox"></div>
+    
 </div>
 
 
@@ -408,24 +427,23 @@
 
     
       <div class="duoshuo" id="comments">
-    <!-- 多说评论框 start -->
+    <div id="comment-box" ></div>
     <div class="ds-thread" data-thread-key="2016/06/05/Hadoop重新做HA/" data-title="Hadoop重新做HA" data-url="http://kevin0431.github.io/2016/06/05/Hadoop重新做HA/"></div>
-    <!-- 多说评论框 end -->
-    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-    <script type="text/javascript">
-    var duoshuoQuery = {short_name:"kevin0431"};
-    (function() {
-        var ds = document.createElement('script');
-        ds.type = 'text/javascript';ds.async = true;
-        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-        ds.charset = 'UTF-8';
-        (document.getElementsByTagName('head')[0] 
-         || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-    </script>
-    <!-- 多说公共JS代码 end -->
-</div>
+    <script>
+        var duoshuoQuery = {short_name:"kevin0431"};
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+            s.async = true; s.charset = 'UTF-8';
+            (d.head || d.body).appendChild(s);
+        }
 
+        
+    </script>
+    
+    <script> loadComment(); </script>
+
+</div>
     
 
 
@@ -462,7 +480,7 @@
                 2016 Kelvin
             </div>
             <div class="footer-right">
-                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.0">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
             </div>
         </div>
         
@@ -492,7 +510,7 @@
     
     <script src="/js/GithubRepoWidget.js"></script>
 
-<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.1.22/require.min.js"></script>
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
 
     <script>
         $(document).ready(function() {
@@ -549,12 +567,9 @@ MathJax.Hub.Queue(function() {
 
 <div class="scroll" id="scroll">
     <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
-    <a href="#comments" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
     <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
 </div>
-
-    <script src="//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js"></script>
-
 <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
 </script>
   </div>

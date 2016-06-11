@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Kelvin&#39;s Blog</title>
+  <subtitle>Carpe Diem</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="https://kevin0431.github.io/"/>
+  <updated>2016-06-05T14:20:51.000Z</updated>
+  <id>https://kevin0431.github.io/</id>
+  
+  <author>
+    <name>Kelvin</name>
+    <email>sunkai0431@gmail.com</email>
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Hadoop重新做HA</title>
+    <link href="https://kevin0431.github.io/2016/06/05/Hadoop%E9%87%8D%E6%96%B0%E5%81%9AHA/"/>
+    <id>https://kevin0431.github.io/2016/06/05/Hadoop重新做HA/</id>
+    <published>2016-06-04T16:00:00.000Z</published>
+    <updated>2016-06-05T14:20:51.000Z</updated>
+    
+    <content type="html">&lt;h2 id=&quot;1、首先在Active上执行以下命令，手动备份整个name目录：&quot;&gt;&lt;a href=&quot;#1、首先在Active上执行以下命令，手动备份整个name目录：&quot; class=&quot;headerlink&quot; title=&quot;1、首先在Active上执行以下命令，手动备份整个name目录：&quot;&gt;&lt;/a&gt;1、首先在Active上执行以下命令，手动备份整个name目录：&lt;/h2&gt;&lt;figure class=&quot;highlight vala&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;#关闭故障自动控制器&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;hadoop-daemon.sh stop zkfs&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;#进入安全模式&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;hdfs dfsadmin -safemode enter&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;#刷新editslog到fsimage&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;hdfs dfsadmin -saveNamespace&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h2 id=&quot;2、在Standby上备份整个name和journal目录，在执行：&quot;&gt;&lt;a href=&quot;#2、在Standby上备份整个name和journal目录，在执行：&quot; class=&quot;headerlink&quot; title=&quot;2、在Standby上备份整个name和journal目录，在执行：&quot;&gt;&lt;/a&gt;2、在Standby上备份整个name和journal目录，在执行：&lt;/h2&gt;&lt;figure class=&quot;highlight stylus&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;hadoop-daemon&lt;span class=&quot;selector-class&quot;&gt;.sh&lt;/span&gt; stop zkfc&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;hdfs namenode -bootstrapStandby&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;若报以下错：&lt;br&gt;&lt;strong&gt;FATAL ha.BootstrapStandby: Unable to read transaction ids 10-100 from the configured shared edits storage qjournal://1.1.1.1:8485;1.1.1.2:8485/sec-hdfs-cluster. Please copy these logs into the shared edits storage or call saveNamespace on the active node.&lt;br&gt;Error: Gap in transactions. Expected to be able to read up until at least txid 10 but unable to find any edit logs containing txid 10&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;需要将Active整个name目录复制到Standby，然后启动namenode：&lt;br&gt;&lt;figure class=&quot;highlight elixir&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;scp -r /data/hadoop/name &lt;span class=&quot;variable&quot;&gt;$standby_ip&lt;/span&gt;&lt;span class=&quot;symbol&quot;&gt;:/data/hadoop&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;hadoop-daemon.sh start namenode&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;1、首先在Active上执行以下命令，手动备份整个name目录：&quot;&gt;&lt;a href=&quot;#1、首先在Active上执行以下命令，手动备份整个name目录：&quot; class=&quot;headerlink&quot; title=&quot;1、首先在Active上执行以下命令，手动备份整个nam
+    
+    </summary>
+    
+    
+      <category term="Hadoop" scheme="https://kevin0431.github.io/tags/Hadoop/"/>
+    
+      <category term="Namenode" scheme="https://kevin0431.github.io/tags/Namenode/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>CentOS安装加固总结</title>
+    <link href="https://kevin0431.github.io/2016/05/15/Centos%E5%AE%89%E5%85%A8%E5%8A%A0%E5%9B%BA%E6%80%BB%E7%BB%93/"/>
+    <id>https://kevin0431.github.io/2016/05/15/Centos安全加固总结/</id>
+    <published>2016-05-14T16:00:00.000Z</published>
+    <updated>2016-06-05T14:27:00.302Z</updated>
+    
+    <content type="html">&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;要更新的软件：&lt;br&gt;bash，openssl，glibc&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;配置密码不允许重复次数和复杂度&quot;&gt;&lt;a href=&quot;#配置密码不允许重复次数和复杂度&quot; class=&quot;headerlink&quot; title=&quot;配置密码不允许重复次数和复杂度&quot;&gt;&lt;/a&gt;配置密码不允许重复次数和复杂度&lt;/h2&gt;&lt;pre&gt;
+#编辑/etc/pam.d/system-auth文件，找到以下行：
+password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_authtok
+#后面添加  remember=3  代表不允许使用之前3次用过的密码
+&lt;/pre&gt;
+
+&lt;pre&gt;
+#找到以下行
+password    requisite     pam_cracklib.so try_first_pass retry=3 type=
+
+修改为：
+password    requisite     pam_cracklib.so try_first_pass retry=6 ucredit=-1 lcredit=-1 dcredit=-1 ocredit=-1
+#retry=N 重试N次后返回密码错误
+#difok=N 新密码必需与旧密码不同的位数
+#dcredit=N N&gt;=0表示密码最多N个数字，反之最少N个数字
+#lcredit=N 小写字母个数
+#ucredit=N 小写字母个数
+#ccredit=N 小写字母个数
+#minclass=N 密码组成(大/小字母,数字,特殊字符)
+#root不受此限制，普通用户登录后改密码才受限制
+&lt;/pre&gt;
+
+&lt;h2 id=&quot;禁止root登录&quot;&gt;&lt;a href=&quot;#禁止root登录&quot; class=&quot;headerlink&quot; title=&quot;禁止root登录&quot;&gt;&lt;/a&gt;禁止root登录&lt;/h2&gt;&lt;pre&gt;
+#更改/etc/ssh/sshd_config，之后重启sshd
+PermitRootLogin yes
+改成：PermitRootLogin no
+&lt;/pre&gt;
+
+&lt;h2 id=&quot;修改密码长度和过期时间：&quot;&gt;&lt;a href=&quot;#修改密码长度和过期时间：&quot; class=&quot;headerlink&quot; title=&quot;修改密码长度和过期时间：&quot;&gt;&lt;/a&gt;修改密码长度和过期时间：&lt;/h2&gt;&lt;pre&gt;
+#改 /etc/login.defs
+PASS_MAX_DAYS   90
+PASS_MIN_DAYS   1
+PASS_MIN_LEN    9
+PASS_WARN_AGE   7
+解释：
+# PASS_MAX_DAYS   密码使用的最长期限
+# PASS_MIN_DAYS   密码允许更改的最短期限
+# PASS_MIN_LEN    能接受的密码最短长度
+# PASS_WARN_AGE   密码过期之前的提醒天数
+&lt;/pre&gt;
+
+&lt;h2 id=&quot;设置连续失败次数和失败锁定时间&quot;&gt;&lt;a href=&quot;#设置连续失败次数和失败锁定时间&quot; class=&quot;headerlink&quot; title=&quot;设置连续失败次数和失败锁定时间&quot;&gt;&lt;/a&gt;设置连续失败次数和失败锁定时间&lt;/h2&gt;&lt;p&gt;修改(/etc/pam.d/system-auth和/etc/pam.d/sshd)分别在开始位置加入以下内容：&lt;/p&gt;
+&lt;pre&gt;
+auth    required    pam_tally2.so    deny=6    unlock_time=300    even_deny_root root_unlock_time=120
+#最大失败次数6次，超过6次锁定300s，root用户锁定120s
+#两个文件中&quot;required pam_tally2.so deny&quot;要删掉
+&lt;/pre&gt;
+
+&lt;h2 id=&quot;umask降权，设置历史命令数&quot;&gt;&lt;a href=&quot;#umask降权，设置历史命令数&quot; class=&quot;headerlink&quot; title=&quot;umask降权，设置历史命令数&quot;&gt;&lt;/a&gt;umask降权，设置历史命令数&lt;/h2&gt;&lt;p&gt;默认uid&amp;gt;199的umask是022，uid&amp;lt;199的umask是022，可以在/etc/profile里新加一行”umask 027”，修改HISSIZE=100，即最大历史命令是100&lt;/p&gt;
+&lt;h2 id=&quot;修改ssh-banner&quot;&gt;&lt;a href=&quot;#修改ssh-banner&quot; class=&quot;headerlink&quot; title=&quot;修改ssh banner&quot;&gt;&lt;/a&gt;修改ssh banner&lt;/h2&gt;&lt;p&gt;自定义banner文件：echo “Only Gomeholdings users can login” &amp;gt; /etc/ssh/gomebanner&lt;br&gt;再修改/etc/ssh/sshd_config 新增”Banner /etc/ssh/gomebanner”&lt;/p&gt;
+&lt;h2 id=&quot;修改ssh访问控制&quot;&gt;&lt;a href=&quot;#修改ssh访问控制&quot; class=&quot;headerlink&quot; title=&quot;修改ssh访问控制&quot;&gt;&lt;/a&gt;修改ssh访问控制&lt;/h2&gt;&lt;p&gt;/etc/hosts.allow文件&lt;br&gt;如： sshd:10.35.0.0/255.255.0.0&lt;br&gt;禁止访问的文件 /etc/hosts.deny    sshd:all&lt;br&gt;hosts.allow文件优先&lt;/p&gt;
+&lt;h2 id=&quot;空闲超时退出&quot;&gt;&lt;a href=&quot;#空闲超时退出&quot; class=&quot;headerlink&quot; title=&quot;空闲超时退出&quot;&gt;&lt;/a&gt;空闲超时退出&lt;/h2&gt;&lt;p&gt;改/etc/profile 追加 TMOUT=300&lt;/p&gt;
+&lt;h2 id=&quot;su限制&quot;&gt;&lt;a href=&quot;#su限制&quot; class=&quot;headerlink&quot; title=&quot;su限制&quot;&gt;&lt;/a&gt;su限制&lt;/h2&gt;&lt;p&gt;修改/etc/login.defs 追加”SU_WHEEL_ONLY yes”&lt;br&gt;修改/etc/pam.d/su&lt;br&gt;将”auth        required    pam_wheel.so use_uid”取消注释&lt;br&gt;将要配置su权限的用户加到wheel组：&lt;br&gt;usermod -G wheel work&lt;/p&gt;
+&lt;h2 id=&quot;取消CTRL-ALT-DELETE&quot;&gt;&lt;a href=&quot;#取消CTRL-ALT-DELETE&quot; class=&quot;headerlink&quot; title=&quot;取消CTRL+ALT+DELETE&quot;&gt;&lt;/a&gt;取消CTRL+ALT+DELETE&lt;/h2&gt;&lt;p&gt;修改/etc/init/control-alt-delete.conf，注释掉以下内容：&lt;br&gt;start on control-alt-delete&lt;br&gt;exec /sbin/shutdown -r now “Control-Alt-Delete pressed”&lt;/p&gt;
+&lt;p&gt;对于Centos7只需：rm -rf /usr/lib/systemd/ctrl-alt-del.target&lt;/p&gt;
+&lt;h2 id=&quot;修改motd，登陆系统后的提示信息&quot;&gt;&lt;a href=&quot;#修改motd，登陆系统后的提示信息&quot; class=&quot;headerlink&quot; title=&quot;修改motd，登陆系统后的提示信息&quot;&gt;&lt;/a&gt;修改motd，登陆系统后的提示信息&lt;/h2&gt;&lt;p&gt;echo “Illegal users are not allowed to login, Only authorized users can login” &amp;gt; /etc/motd&lt;br&gt;当用显示器连接linux主机的时候，屏幕会显示系统版本等相关信息，可以将他取消掉，将/etc/issue和/etc/issue.net改名即可&lt;/p&gt;
+&lt;h2 id=&quot;禁用不用的用户和组&quot;&gt;&lt;a href=&quot;#禁用不用的用户和组&quot; class=&quot;headerlink&quot; title=&quot;禁用不用的用户和组&quot;&gt;&lt;/a&gt;禁用不用的用户和组&lt;/h2&gt;&lt;pre&gt;
+改/etc/passwd
+#adm:x:3:4:adm:/var/adm:/sbin/nologin
+#lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin
+#sync:x:5:0:sync:/sbin:/bin/sync
+#shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown
+#halt:x:7:0:halt:/sbin:/sbin/halt
+#uucp:x:10:14:uucp:/var/spool/uucp:/sbin/nologin
+#operator:x:11:0:operator:/root:/sbin/nologin
+#games:x:12:100:games:/usr/games:/sbin/nologin
+#gopher:x:13:30:gopher:/var/gopher:/sbin/nologin
+&lt;/pre&gt;
+
+&lt;pre&gt;
+改/etc/group
+#adm:x:4:root,adm,daemon
+#lp:x:7:daemon,lp
+#uucp:x:14:uucp
+#games:x:20:
+#dip:x:40:
+&lt;/pre&gt;
+
+&lt;h2 id=&quot;禁用没用的服务&quot;&gt;&lt;a href=&quot;#禁用没用的服务&quot; class=&quot;headerlink&quot; title=&quot;禁用没用的服务&quot;&gt;&lt;/a&gt;禁用没用的服务&lt;/h2&gt;&lt;pre&gt;
+chkconfig acpid off
+chkconfig anacron off
+chkconfig auditd off
+chkconfig avahi-daemon off
+chkconfig autofs off
+chkconfig atd off
+chkconfig bluetooth off
+chkconfig cpuspeed off
+chkconfig cups off
+chkconfig firstboot off
+chkconfig gpm off
+chkconfig haldaemon off
+chkconfig hidd off
+chkconfig ip6tables off
+chkconfig iptables off
+chkconfig lvm2-monitor off
+chkconfig mcstrans off
+chkconfig mdmonitor off
+chkconfig messagebus off
+chkconfig nfslock off
+chkconfig pcscd off
+chkconfig rawdevices off
+chkconfig readahead_early off
+chkconfig restorecond off
+chkconfig rpcidmapd off
+chkconfig sendmail off
+chkconfig xfs off
+chkconfig yum-updatesd off
+chkconfig NetworkManager off
+&lt;/pre&gt;
+
+
+</content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;要更新的软件：&lt;br&gt;bash，openssl，glibc&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;配置密码不允许重复次数和复杂度&quot;&gt;&lt;a href=&quot;#配置密码不允许重复次数和复杂度&quot; class=&quot;head
+    
+    </summary>
+    
+    
+      <category term="OS" scheme="https://kevin0431.github.io/tags/OS/"/>
+    
+      <category term="安全" scheme="https://kevin0431.github.io/tags/%E5%AE%89%E5%85%A8/"/>
+    
+  </entry>
+  
+</feed>

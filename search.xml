@@ -5,7 +5,7 @@
     
     <entry>
       <title><![CDATA[Hadoop重新做HA]]></title>
-      <url>http://kevin0431.github.io/2016/06/05/Hadoop%E9%87%8D%E6%96%B0%E5%81%9AHA/</url>
+      <url>https://kevin0431.github.io/2016/06/05/Hadoop%E9%87%8D%E6%96%B0%E5%81%9AHA/</url>
       <content type="html"><![CDATA[<h2 id="1、首先在Active上执行以下命令，手动备份整个name目录："><a href="#1、首先在Active上执行以下命令，手动备份整个name目录：" class="headerlink" title="1、首先在Active上执行以下命令，手动备份整个name目录："></a>1、首先在Active上执行以下命令，手动备份整个name目录：</h2><figure class="highlight vala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#关闭故障自动控制器</span></span><br><span class="line">hadoop-daemon.sh stop zkfs</span><br><span class="line"></span><br><span class="line"><span class="meta">#进入安全模式</span></span><br><span class="line">hdfs dfsadmin -safemode enter</span><br><span class="line"></span><br><span class="line"><span class="meta">#刷新editslog到fsimage</span></span><br><span class="line">hdfs dfsadmin -saveNamespace</span><br></pre></td></tr></table></figure>
 <h2 id="2、在Standby上备份整个name和journal目录，在执行："><a href="#2、在Standby上备份整个name和journal目录，在执行：" class="headerlink" title="2、在Standby上备份整个name和journal目录，在执行："></a>2、在Standby上备份整个name和journal目录，在执行：</h2><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hadoop-daemon<span class="selector-class">.sh</span> stop zkfc</span><br><span class="line">hdfs namenode -bootstrapStandby</span><br></pre></td></tr></table></figure>
 <p>若报以下错：<br><strong>FATAL ha.BootstrapStandby: Unable to read transaction ids 10-100 from the configured shared edits storage qjournal://1.1.1.1:8485;1.1.1.2:8485/sec-hdfs-cluster. Please copy these logs into the shared edits storage or call saveNamespace on the active node.<br>Error: Gap in transactions. Expected to be able to read up until at least txid 10 but unable to find any edit logs containing txid 10</strong></p>
@@ -15,7 +15,7 @@
     
     <entry>
       <title><![CDATA[CentOS安装加固总结]]></title>
-      <url>http://kevin0431.github.io/2016/05/15/Centos%E5%AE%89%E5%85%A8%E5%8A%A0%E5%9B%BA%E6%80%BB%E7%BB%93/</url>
+      <url>https://kevin0431.github.io/2016/05/15/Centos%E5%AE%89%E5%85%A8%E5%8A%A0%E5%9B%BA%E6%80%BB%E7%BB%93/</url>
       <content type="html"><![CDATA[<blockquote>
 <ul>
 <li>要更新的软件：<br>bash，openssl，glibc</li>

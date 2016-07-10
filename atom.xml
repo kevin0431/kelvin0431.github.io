@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://kevin0431.github.io/"/>
-  <updated>2016-06-05T14:20:51.000Z</updated>
+  <updated>2016-07-10T14:00:08.279Z</updated>
   <id>https://kevin0431.github.io/</id>
   
   <author>
@@ -14,6 +14,395 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>测试Hive INT数据类型</title>
+    <link href="https://kevin0431.github.io/2016/07/10/%E6%B5%8B%E8%AF%95Hive-INT%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/"/>
+    <id>https://kevin0431.github.io/2016/07/10/测试Hive-INT数据类型/</id>
+    <published>2016-07-09T16:00:00.000Z</published>
+    <updated>2016-07-10T14:00:08.279Z</updated>
+    
+    <content type="html">&lt;h1 id=&quot;测试HIVE如何处理NUMBER类型数据&quot;&gt;&lt;a href=&quot;#测试HIVE如何处理NUMBER类型数据&quot; class=&quot;headerlink&quot; title=&quot;测试HIVE如何处理NUMBER类型数据&quot;&gt;&lt;/a&gt;测试HIVE如何处理NUMBER类型数据&lt;/h1&gt;&lt;hr&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;以TEST.NUMTEST为例&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;相关资料：&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://docs.oracle.com/cd/E12151_01/doc.150/e12155/oracle_mysql_compared.htm#i1027526&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Oracle与Mysql数据类型对比&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://cwiki.apache.org/confluence/display/Hive/LanguageManual+Types#LanguageManualTypes-NumericTypes&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;HIVE官方支持的所有数据类型&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;Environment&quot;&gt;&lt;a href=&quot;#Environment&quot; class=&quot;headerlink&quot; title=&quot;Environment&quot;&gt;&lt;/a&gt;Environment&lt;/h3&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&quot;text-align:left&quot;&gt;Product&lt;/th&gt;
+&lt;th style=&quot;text-align:left&quot;&gt;Version&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;HDP&lt;/td&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;2.4.0.0-169&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;Sqoop&lt;/td&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;1.4.6.2.4.0.0-169&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;Hive&lt;/td&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;1.2.1000.2.4.0.0-169&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;Oracle&lt;/td&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;11g.203&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;TEST.NUMTEST表结构：&lt;br&gt;&lt;img src=&quot;http://i.imgur.com/Msu7zWZ.png&quot; alt=&quot;&quot;&gt;&lt;br&gt;&lt;img src=&quot;http://i.imgur.com/kUxqVKH.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;表内容：&lt;br&gt;&lt;img src=&quot;http://i.imgur.com/VouhmAR.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;h3 id=&quot;Purpose&quot;&gt;&lt;a href=&quot;#Purpose&quot; class=&quot;headerlink&quot; title=&quot;Purpose&quot;&gt;&lt;/a&gt;Purpose&lt;/h3&gt;&lt;p&gt;测试出Hive处理NUMBER类型的结果&lt;/p&gt;
+&lt;h3 id=&quot;Procedure&quot;&gt;&lt;a href=&quot;#Procedure&quot; class=&quot;headerlink&quot; title=&quot;Procedure&quot;&gt;&lt;/a&gt;Procedure&lt;/h3&gt;&lt;p&gt;1、不进行map-column-hive，直接导入，sqoop语句如下：&lt;br&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;sqoop import --connect &lt;span class=&quot;string&quot;&gt;&#39;jdbc:oracle:thin:@10.143.90.12:1521:infodb&#39;&lt;/span&gt; --username bdc  --password bdc --table TEST.NUMTEST --hive-import --hive-database TEST --hive-table  numtest  --fields-terminated-by &lt;span class=&quot;string&quot;&gt;&quot;\t&quot;&lt;/span&gt; --lines-terminated-by &lt;span class=&quot;string&quot;&gt;&quot;\n&quot;&lt;/span&gt;    --hive-overwrite --delete-target-dir  --hive-drop-import-delims --null-string &lt;span class=&quot;string&quot;&gt;&#39;\\N&#39;&lt;/span&gt; --null-non-string &lt;span class=&quot;string&quot;&gt;&#39;\\N&#39;&lt;/span&gt;  -m 1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;HIVE处理结果：&lt;br&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;hive&amp;gt; desc NUMTEST;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;OK&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;three                   double                                      &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;nine                    double                                      &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;ten                     double                                      &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;fifteen                 double                                      &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;nineteen                double                                      &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;twentytwo               double                                      &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Time taken: 0.429 seconds, Fetched: 6 row(s)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;hive&amp;gt; select * from NUMTEST;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;OK&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;0.0 1.23456789E8    1.23456789E9    1.23456789123456E14 1.23456789123456794E18  1.2345678901234568E21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10.0    NULL    NULL    NULL    NULL    NULL&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Time taken: 0.165 seconds, Fetched: 2 row(s)&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;2、转化规则如下：&lt;br&gt;–map-column-hive THREE=tinyint,FIFTEEN=bigint,TEN=int,NINE=int,TWENTYTWO=bigint,NINETEEN=bigint&lt;/p&gt;
+&lt;p&gt;HIVE处理结果：&lt;br&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;hive&amp;gt; desc NUMTEST;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;OK&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;three                   tinyint                                     &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;nine                    int                                         &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;ten                     int                                         &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;fifteen                 bigint                                      &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;nineteen                bigint                                      &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;twentytwo               bigint                                      &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Time taken: 0.427 seconds, Fetched: 6 row(s)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;hive&amp;gt; select * from NUMTEST;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;OK&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;0   123456789   1234567890  123456789123456 1234567891234567890 NULL&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10  NULL    NULL    NULL    NULL    NULL&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Time taken: 0.089 seconds, Fetched: 2 row(s)&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;3、单独测试，NUMBER(15)转为INT&lt;/p&gt;
+&lt;p&gt;HIVE处理结果：&lt;br&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;hive&amp;gt; desc NUMTEST;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;OK&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;three                   tinyint                                     &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;nine                    int                                         &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;ten                     int                                         &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;fifteen                 int                                         &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;nineteen                bigint                                      &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;twentytwo               bigint                                      &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Time taken: 0.424 seconds, Fetched: 6 row(s)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;hive&amp;gt; select * from NUMTEST;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;OK&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;0   123456789   1234567890  NULL    1234567891234567890 NULL&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10  NULL    NULL    NULL    NULL    NULL&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Time taken: 0.135 seconds, Fetched: 2 row(s)&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;4、单独测试，NUMBER(19)转为INT&lt;br&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;hive&amp;gt; desc NUMTEST;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;OK&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;three                   tinyint                                     &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;nine                    int                                         &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;ten                     int                                         &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;fifteen                 int                                         &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;nineteen                int                                         &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;twentytwo               bigint                                      &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Time taken: 0.437 seconds, Fetched: 6 row(s)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;hive&amp;gt; select * from NUMTEST;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;OK&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;0   123456789   1234567890  NULL    NULL    NULL&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10  NULL    NULL    NULL    NULL    NULL&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Time taken: 0.113 seconds, Fetched: 2 row(s)&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;5、测试NUMBER(22)转为string：&lt;br&gt;–map-column-hive THREE=tinyint,FIFTEEN=bigint,TEN=int,NINE=int,TWENTYTWO=string,NINETEEN=bigint&lt;/p&gt;
+&lt;p&gt;HIVE结果：&lt;br&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;hive&amp;gt; desc NUMTEST;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;OK&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;three                   tinyint                                     &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;nine                    int                                         &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;ten                     int                                         &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;fifteen                 bigint                                      &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;nineteen                bigint                                      &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;twentytwo               string                                      &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Time taken: 0.426 seconds, Fetched: 6 row(s)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;hive&amp;gt; select * from NUMTEST;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;OK&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;0   123456789   1234567890  123456789123456 1234567891234567890 1234567890123456789012&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10  NULL    NULL    NULL    NULL    NULL&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Time taken: 0.132 seconds, Fetched: 2 row(s)&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;6、测试NUMBER(11)转为INT和BIGINT&lt;/p&gt;
+&lt;p&gt;INT的HIVE结果：&lt;br&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;hive&amp;gt; desc NUMTEST;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;OK&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;three                   tinyint                                     &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;nine                    int                                         &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;ten                     int                                         &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;fifteen                 bigint                                      &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;nineteen                bigint                                      &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;twentytwo               string                                      &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;eleven                  int                                         &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Time taken: 0.43 seconds, Fetched: 7 row(s)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;hive&amp;gt; select * from NUMTEST;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;OK&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;0   123456789   1234567890  123456789123456 1234567891234567890 1234567890123456789012  NULL&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10  NULL    NULL    NULL    NULL    NULL    NULL&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Time taken: 0.1 seconds, Fetched: 2 row(s)&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;BIGINT的HIVE结果：&lt;br&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;hive&amp;gt; desc NUMTEST;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;OK&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;three                   tinyint                                     &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;nine                    int                                         &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;ten                     int                                         &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;fifteen                 bigint                                      &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;nineteen                bigint                                      &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;twentytwo               string                                      &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;eleven                  bigint                                      &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Time taken: 0.426 seconds, Fetched: 7 row(s)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;hive&amp;gt; select * from NUMTEST;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;OK&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;0   123456789   1234567890  123456789123456 1234567891234567890 1234567890123456789012  12345678901&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10  NULL    NULL    NULL    NULL    NULL    NULL&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Time taken: 0.132 seconds, Fetched: 2 row(s)&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;7、测试NUMBER无长度，无精度类型，需要转成string&lt;/p&gt;
+&lt;p&gt;Hive的结果：&lt;br&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;hive&amp;gt; desc numtest;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;OK&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;three                   tinyint                                     &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;nine                    int                                         &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;ten                     int                                         &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;fifteen                 bigint                                      &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;nineteen                bigint                                      &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;twentytwo               string                                      &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;eleven                  bigint                                      &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;aa                      string                                      &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;bb                      double                                      &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Time taken: 0.425 seconds, Fetched: 9 row(s)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;hive&amp;gt; select * from  numtest;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;OK&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;0   123456789   1234567890  123456789123456 1234567891234567890 1234567890123456789012  12345678901 123456789012345 1.234567812E7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10  NULL    NULL    NULL    NULL    NULL    NULL    123.99  NULL&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Time taken: 0.176 seconds, Fetched: 2 row(s)&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;8、双精度double类型，转成string&lt;br&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;hive&amp;gt; desc numtest;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;OK&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;three                   tinyint                                     &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;nine                    int                                         &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;ten                     int                                         &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;fifteen                 bigint                                      &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;nineteen                bigint                                      &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;twentytwo               string                                      &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;eleven                  bigint                                      &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;aa                      string                                      &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;bb                      string                                      &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Time taken: 0.553 seconds, Fetched: 9 row(s)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;hive&amp;gt; select * from  numtest;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;OK&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;0   123456789   1234567890  123456789123456 1234567891234567890 1234567890123456789012  12345678901 123456789012345 12345678.12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10  NULL    NULL    NULL    NULL    NULL    NULL    123.99  NULL&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Time taken: 0.162 seconds, Fetched: 2 row(s)&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;h3 id=&quot;Conclusion&quot;&gt;&lt;a href=&quot;#Conclusion&quot; class=&quot;headerlink&quot; title=&quot;Conclusion&quot;&gt;&lt;/a&gt;Conclusion&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;HIVE转化Oracle的NUMBER数据类型结论如下：&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&quot;text-align:left&quot;&gt;Orace数据类型&lt;/th&gt;
+&lt;th style=&quot;text-align:left&quot;&gt;Hive数据类型&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;NUMBER(1)~NUMBER(3)&lt;/td&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;TINYINT&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;NUMBER(4)~NUMBER(10)&lt;/td&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;INT&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;NUMBER(11)~NUMBER(19)&lt;/td&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;BIGINT&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;NUMBER(20)以上&lt;/td&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;STRING&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;HIVE数据类型转换&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&quot;text-align:left&quot;&gt;所有类型&lt;/th&gt;
+&lt;th style=&quot;text-align:center&quot;&gt;BOOLEAN&lt;/th&gt;
+&lt;th style=&quot;text-align:center&quot;&gt;TINYINT&lt;/th&gt;
+&lt;th style=&quot;text-align:center&quot;&gt;SMALLINT&lt;/th&gt;
+&lt;th style=&quot;text-align:center&quot;&gt;INT&lt;/th&gt;
+&lt;th style=&quot;text-align:center&quot;&gt;BIGINT&lt;/th&gt;
+&lt;th style=&quot;text-align:center&quot;&gt;FLOAT&lt;/th&gt;
+&lt;th style=&quot;text-align:center&quot;&gt;DOUBLE&lt;/th&gt;
+&lt;th style=&quot;text-align:center&quot;&gt;DECIMAL&lt;/th&gt;
+&lt;th style=&quot;text-align:center&quot;&gt;STRING&lt;/th&gt;
+&lt;th style=&quot;text-align:center&quot;&gt;VARCHAR&lt;/th&gt;
+&lt;th style=&quot;text-align:center&quot;&gt;TIMESTAMP&lt;/th&gt;
+&lt;th style=&quot;text-align:center&quot;&gt;DATE&lt;/th&gt;
+&lt;th style=&quot;text-align:center&quot;&gt;BINARY&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;BOOLEAN&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;TINYINT&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;SMALLINT&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;INT&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;BIGINT&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;FLOAT&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;DOUBLE&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;DECIMAL&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;STRING&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;VARCHAR&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;TIMESTAMP&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;DATE&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;BINARY&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;false&lt;/td&gt;
+&lt;td style=&quot;text-align:center&quot;&gt;true&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;测试HIVE如何处理NUMBER类型数据&quot;&gt;&lt;a href=&quot;#测试HIVE如何处理NUMBER类型数据&quot; class=&quot;headerlink&quot; title=&quot;测试HIVE如何处理NUMBER类型数据&quot;&gt;&lt;/a&gt;测试HIVE如何处理NUMBER类型数据&lt;/h1&gt;&lt;
+    
+    </summary>
+    
+    
+      <category term="Hive" scheme="https://kevin0431.github.io/tags/Hive/"/>
+    
+      <category term="INT" scheme="https://kevin0431.github.io/tags/INT/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>自定义Ambari Alerts</title>
+    <link href="https://kevin0431.github.io/2016/06/20/%E8%87%AA%E5%AE%9A%E4%B9%89Ambari-Alerts/"/>
+    <id>https://kevin0431.github.io/2016/06/20/自定义Ambari-Alerts/</id>
+    <published>2016-06-19T16:00:00.000Z</published>
+    <updated>2016-07-10T14:01:01.861Z</updated>
+    
+    <content type="html">&lt;h1 id=&quot;Update-thresholds-for-the-Ambari-alert&quot;&gt;&lt;a href=&quot;#Update-thresholds-for-the-Ambari-alert&quot; class=&quot;headerlink&quot; title=&quot;Update thresholds for the Ambari alert&quot;&gt;&lt;/a&gt;Update thresholds for the Ambari alert&lt;/h1&gt;&lt;hr&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;以Host Disk Usage为例&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&quot;Environment&quot;&gt;&lt;a href=&quot;#Environment&quot; class=&quot;headerlink&quot; title=&quot;Environment&quot;&gt;&lt;/a&gt;Environment&lt;/h3&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&quot;text-align:left&quot;&gt;Product&lt;/th&gt;
+&lt;th style=&quot;text-align:left&quot;&gt;Version&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;Ambari&lt;/td&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;2.2.1.0-169&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;HDP&lt;/td&gt;
+&lt;td style=&quot;text-align:left&quot;&gt;2.4.0.0-169&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&quot;Purpose&quot;&gt;&lt;a href=&quot;#Purpose&quot; class=&quot;headerlink&quot; title=&quot;Purpose&quot;&gt;&lt;/a&gt;Purpose&lt;/h3&gt;&lt;p&gt;修改Host Disk Usage warning value，默认50%&lt;/p&gt;
+&lt;h3 id=&quot;Procedure&quot;&gt;&lt;a href=&quot;#Procedure&quot; class=&quot;headerlink&quot; title=&quot;Procedure&quot;&gt;&lt;/a&gt;Procedure&lt;/h3&gt;&lt;p&gt;1、找到集群名字&lt;br&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;[root@gmjk-dsj8 ~]&lt;span class=&quot;comment&quot;&gt;# curl --user admin:admin http://localhost:8080/api/v1/clusters/&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;string&quot;&gt;&quot;href&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;http://localhost:8080/api/v1/clusters/&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;string&quot;&gt;&quot;items&quot;&lt;/span&gt; : [&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      &lt;span class=&quot;string&quot;&gt;&quot;href&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;http://localhost:8080/api/v1/clusters/test&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      &lt;span class=&quot;string&quot;&gt;&quot;Clusters&quot;&lt;/span&gt; : &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;string&quot;&gt;&quot;cluster_name&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;test&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;string&quot;&gt;&quot;version&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;HDP-2.4&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  ]&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;2、输出集群所有配置&lt;br&gt;&lt;figure class=&quot;highlight elixir&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;[root&lt;span class=&quot;variable&quot;&gt;@gmjk&lt;/span&gt;-dsj8 ~]&lt;span class=&quot;comment&quot;&gt;# curl --user admin:admin http://localhost:8080/api/v1/clusters/test &amp;gt; /root/0620&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                                 Dload  Upload   Total   Spent    Left  Speed&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;number&quot;&gt;100&lt;/span&gt;  &lt;span class=&quot;number&quot;&gt;885&lt;/span&gt;k    &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;  &lt;span class=&quot;number&quot;&gt;885&lt;/span&gt;k    &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;     &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;  &lt;span class=&quot;number&quot;&gt;2475&lt;/span&gt;k      &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt; --&lt;span class=&quot;symbol&quot;&gt;:--&lt;/span&gt;&lt;span class=&quot;symbol&quot;&gt;:--&lt;/span&gt; --&lt;span class=&quot;symbol&quot;&gt;:--&lt;/span&gt;&lt;span class=&quot;symbol&quot;&gt;:--&lt;/span&gt; --&lt;span class=&quot;symbol&quot;&gt;:--&lt;/span&gt;&lt;span class=&quot;symbol&quot;&gt;:--&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;2488&lt;/span&gt;k&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;3、找到Host Disk Usage配置，URL应该是&lt;br&gt;&lt;figure class=&quot;highlight crystal&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;symbol&quot;&gt;http:&lt;/span&gt;/&lt;span class=&quot;regexp&quot;&gt;/gmjk-dsj8:8080/api&lt;/span&gt;&lt;span class=&quot;regexp&quot;&gt;/v1/clusters&lt;/span&gt;&lt;span class=&quot;regexp&quot;&gt;/test/alert&lt;/span&gt;_definitions/&lt;span class=&quot;number&quot;&gt;3&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;4、查看Host Disk Usage配置细节&lt;br&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;38&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;39&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;40&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;41&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;42&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;43&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;44&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;45&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;46&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;47&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;48&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;49&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;50&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;[root@gmjk-dsj8 ~]&lt;span class=&quot;comment&quot;&gt;# curl -u admin:admin -X GET http://gmjk-dsj8:8080/api/v1/clusters/test/alert_definitions/3&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;string&quot;&gt;&quot;href&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;http://gmjk-dsj8:8080/api/v1/clusters/test/alert_definitions/3&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;string&quot;&gt;&quot;AlertDefinition&quot;&lt;/span&gt; : &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;string&quot;&gt;&quot;cluster_name&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;test&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;string&quot;&gt;&quot;component_name&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;AMBARI_AGENT&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;string&quot;&gt;&quot;description&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;This host-level alert is triggered if the amount of disk space used goes above specific thresholds. The default threshold values are 70% for WARNING and 80% for CRITICAL&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;string&quot;&gt;&quot;enabled&quot;&lt;/span&gt; : &lt;span class=&quot;literal&quot;&gt;true&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;string&quot;&gt;&quot;id&quot;&lt;/span&gt; : 3,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;string&quot;&gt;&quot;ignore_host&quot;&lt;/span&gt; : &lt;span class=&quot;literal&quot;&gt;false&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;string&quot;&gt;&quot;interval&quot;&lt;/span&gt; : 1,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;string&quot;&gt;&quot;label&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;Host Disk Usage&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;string&quot;&gt;&quot;name&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;ambari_agent_disk_usage&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;string&quot;&gt;&quot;scope&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;HOST&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;string&quot;&gt;&quot;service_name&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;AMBARI&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;string&quot;&gt;&quot;source&quot;&lt;/span&gt; : &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      &lt;span class=&quot;string&quot;&gt;&quot;parameters&quot;&lt;/span&gt; : [&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;          &lt;span class=&quot;string&quot;&gt;&quot;display_name&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;Minimum Free Space&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;          &lt;span class=&quot;string&quot;&gt;&quot;description&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;The overall amount of free disk space left before an alert is triggered.&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;          &lt;span class=&quot;string&quot;&gt;&quot;name&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;minimum.free.space&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;          &lt;span class=&quot;string&quot;&gt;&quot;value&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;5.0E9&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;          &lt;span class=&quot;string&quot;&gt;&quot;type&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;NUMERIC&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;          &lt;span class=&quot;string&quot;&gt;&quot;units&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;bytes&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;          &lt;span class=&quot;string&quot;&gt;&quot;threshold&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;WARNING&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;          &lt;span class=&quot;string&quot;&gt;&quot;display_name&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;Warning&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;          &lt;span class=&quot;string&quot;&gt;&quot;description&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;The percent of disk space consumed before a warning is triggered.&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;          &lt;span class=&quot;string&quot;&gt;&quot;name&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;percent.used.space.warning.threshold&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;          &lt;span class=&quot;string&quot;&gt;&quot;value&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;0.7&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;          &lt;span class=&quot;string&quot;&gt;&quot;type&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;PERCENT&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;          &lt;span class=&quot;string&quot;&gt;&quot;units&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;%&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;          &lt;span class=&quot;string&quot;&gt;&quot;threshold&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;WARNING&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;          &lt;span class=&quot;string&quot;&gt;&quot;display_name&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;Critical&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;          &lt;span class=&quot;string&quot;&gt;&quot;description&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;The percent of disk space consumed before a critical alert is triggered.&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;          &lt;span class=&quot;string&quot;&gt;&quot;name&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;percent.free.space.critical.threshold&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;          &lt;span class=&quot;string&quot;&gt;&quot;value&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;0.8&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;          &lt;span class=&quot;string&quot;&gt;&quot;type&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;PERCENT&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;          &lt;span class=&quot;string&quot;&gt;&quot;units&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;%&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;          &lt;span class=&quot;string&quot;&gt;&quot;threshold&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;CRITICAL&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      ],&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      &lt;span class=&quot;string&quot;&gt;&quot;path&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;alert_disk_space.py&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      &lt;span class=&quot;string&quot;&gt;&quot;type&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;SCRIPT&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;5、拷贝以上输出，去掉”href”行，修改需要的value和Description&lt;/p&gt;
+&lt;p&gt;6、上传修改后的JSON，注意 PUT -d 后的单引号&lt;br&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;38&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;39&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;40&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;41&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;42&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;43&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;44&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;45&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;46&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;47&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;48&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;[root@gmjk-dsj8 ~]&lt;span class=&quot;comment&quot;&gt;# curl -u admin:admin -H &#39;X-Requested-By:admin&#39; -X PUT  -d &#39;&amp;#123;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;   &lt;span class=&quot;string&quot;&gt;&quot;AlertDefinition&quot;&lt;/span&gt; : &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;     &lt;span class=&quot;string&quot;&gt;&quot;cluster_name&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;test&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;     &lt;span class=&quot;string&quot;&gt;&quot;component_name&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;AMBARI_AGENT&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;     &lt;span class=&quot;string&quot;&gt;&quot;description&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;This host-level alert is triggered if the amount of disk space used goes above specific thresholds. The default threshold values are 70% for WARNING and 80% for CRITICAL&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;     &lt;span class=&quot;string&quot;&gt;&quot;enabled&quot;&lt;/span&gt; : &lt;span class=&quot;literal&quot;&gt;true&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;     &lt;span class=&quot;string&quot;&gt;&quot;id&quot;&lt;/span&gt; : 3,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;     &lt;span class=&quot;string&quot;&gt;&quot;ignore_host&quot;&lt;/span&gt; : &lt;span class=&quot;literal&quot;&gt;false&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;     &lt;span class=&quot;string&quot;&gt;&quot;interval&quot;&lt;/span&gt; : 1,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;     &lt;span class=&quot;string&quot;&gt;&quot;label&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;Host Disk Usage&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;     &lt;span class=&quot;string&quot;&gt;&quot;name&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;ambari_agent_disk_usage&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;     &lt;span class=&quot;string&quot;&gt;&quot;scope&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;HOST&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;     &lt;span class=&quot;string&quot;&gt;&quot;service_name&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;AMBARI&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;     &lt;span class=&quot;string&quot;&gt;&quot;source&quot;&lt;/span&gt; : &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;       &lt;span class=&quot;string&quot;&gt;&quot;parameters&quot;&lt;/span&gt; : [&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;         &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;           &lt;span class=&quot;string&quot;&gt;&quot;name&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;minimum.free.space&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;           &lt;span class=&quot;string&quot;&gt;&quot;display_name&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;Minimum Free Space&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;           &lt;span class=&quot;string&quot;&gt;&quot;units&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;bytes&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;           &lt;span class=&quot;string&quot;&gt;&quot;value&quot;&lt;/span&gt; : 5.0E9,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;           &lt;span class=&quot;string&quot;&gt;&quot;description&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;The overall amount of free disk space left before an alert is triggered.&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;           &lt;span class=&quot;string&quot;&gt;&quot;type&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;NUMERIC&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;           &lt;span class=&quot;string&quot;&gt;&quot;threshold&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;WARNING&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;         &amp;#125;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;         &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;           &lt;span class=&quot;string&quot;&gt;&quot;name&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;percent.used.space.warning.threshold&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;           &lt;span class=&quot;string&quot;&gt;&quot;display_name&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;Warning&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;           &lt;span class=&quot;string&quot;&gt;&quot;units&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;%&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;           &lt;span class=&quot;string&quot;&gt;&quot;value&quot;&lt;/span&gt; : 0.7,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;           &lt;span class=&quot;string&quot;&gt;&quot;description&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;The percent of disk space consumed before a warning is triggered.&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;           &lt;span class=&quot;string&quot;&gt;&quot;type&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;PERCENT&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;           &lt;span class=&quot;string&quot;&gt;&quot;threshold&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;WARNING&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;         &amp;#125;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;         &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;           &lt;span class=&quot;string&quot;&gt;&quot;name&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;percent.free.space.critical.threshold&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;           &lt;span class=&quot;string&quot;&gt;&quot;display_name&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;Critical&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;           &lt;span class=&quot;string&quot;&gt;&quot;units&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;%&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;           &lt;span class=&quot;string&quot;&gt;&quot;value&quot;&lt;/span&gt; : 0.8,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;           &lt;span class=&quot;string&quot;&gt;&quot;description&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;The percent of disk space consumed before a critical alert is triggered.&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;           &lt;span class=&quot;string&quot;&gt;&quot;type&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;PERCENT&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;           &lt;span class=&quot;string&quot;&gt;&quot;threshold&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;CRITICAL&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;         &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;       ],&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;       &lt;span class=&quot;string&quot;&gt;&quot;path&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;alert_disk_space.py&quot;&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;       &lt;span class=&quot;string&quot;&gt;&quot;type&quot;&lt;/span&gt; : &lt;span class=&quot;string&quot;&gt;&quot;SCRIPT&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;     &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt;   &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;gt; &amp;#125;&lt;span class=&quot;string&quot;&gt;&#39; http://gmjk-dsj8:8080/api/v1/clusters/test/alert_definitions/3&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;7、检查修改后的监控项&lt;br&gt;&lt;img src=&quot;http://i.imgur.com/t9IlzDf.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;Update-thresholds-for-the-Ambari-alert&quot;&gt;&lt;a href=&quot;#Update-thresholds-for-the-Ambari-alert&quot; class=&quot;headerlink&quot; title=&quot;Update threshold
+    
+    </summary>
+    
+    
+      <category term="Ambari" scheme="https://kevin0431.github.io/tags/Ambari/"/>
+    
+      <category term="HDP" scheme="https://kevin0431.github.io/tags/HDP/"/>
+    
+  </entry>
   
   <entry>
     <title>Hadoop重新做HA</title>

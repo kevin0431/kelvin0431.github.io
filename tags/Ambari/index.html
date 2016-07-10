@@ -15,19 +15,15 @@
 
 
 
-<meta name="description" content="1、首先在Active上执行以下命令，手动备份整个name目录：12345678#关闭故障自动控制器hadoop-daemon.sh stop zkfs#进入安全模式hdfs dfsadmin -safemode enter#刷新editslog到fsimagehdfs dfsadmin -saveNamespace
-2、在Standby上备份整个name和journal目录，在执行：12hado">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Hadoop重新做HA">
-<meta property="og:url" content="https://kevin0431.github.io/2016/06/05/Hadoop重新做HA/index.html">
+<meta name="description" content="Things need record">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Kelvin's Blog">
+<meta property="og:url" content="https://kevin0431.github.io/tags/Ambari/index.html">
 <meta property="og:site_name" content="Kelvin's Blog">
-<meta property="og:description" content="1、首先在Active上执行以下命令，手动备份整个name目录：12345678#关闭故障自动控制器hadoop-daemon.sh stop zkfs#进入安全模式hdfs dfsadmin -safemode enter#刷新editslog到fsimagehdfs dfsadmin -saveNamespace
-2、在Standby上备份整个name和journal目录，在执行：12hado">
-<meta property="og:updated_time" content="2016-06-05T14:20:51.000Z">
+<meta property="og:description" content="Things need record">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hadoop重新做HA">
-<meta name="twitter:description" content="1、首先在Active上执行以下命令，手动备份整个name目录：12345678#关闭故障自动控制器hadoop-daemon.sh stop zkfs#进入安全模式hdfs dfsadmin -safemode enter#刷新editslog到fsimagehdfs dfsadmin -saveNamespace
-2、在Standby上备份整个name和journal目录，在执行：12hado">
+<meta name="twitter:title" content="Kelvin's Blog">
+<meta name="twitter:description" content="Things need record">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -59,7 +55,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Hadoop重新做HA | Kelvin&#39;s Blog</title>
+<title>Tag: Ambari | Kelvin&#39;s Blog</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -69,9 +65,9 @@
         fancybox: true,
         animate: true,
         isHome: false,
-        isPost: true,
+        isPost: false,
         isArchive: false,
-        isTag: false,
+        isTag: true,
         isCategory: false,
         open_in_new: false,
         fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
@@ -301,188 +297,54 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-Hadoop重新做HA" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap">
   
-    <div class="article-meta">
-      <a href="/2016/06/05/Hadoop重新做HA/" class="article-date">
-      <time datetime="2016-06-04T16:00:00.000Z" itemprop="datePublished">2016-06-05</time>
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2016" class="archive-year">2016</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+          <div class="article-meta">
+              <a href="/2016/06/20/自定义Ambari-Alerts/" class="archive-article-date">
+      <time datetime="2016-06-19T16:00:00.000Z" itemprop="datePublished">06-20</time>
 </a>
-    </div>
+        </div>
+         
   
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      Hadoop重新做HA
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2016/06/20/自定义Ambari-Alerts/">自定义Ambari Alerts</a>
     </h1>
   
 
-      </header>
-      
-      <div class="article-info article-info-post">
-        
-
-        
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hadoop/">Hadoop</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Namenode/">Namenode</a></li></ul>
-    </div>
-
-        <div class="clearfix"></div>
-      </div>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
+        <div class="article-info info-on-archive">
           
-        <h2 id="1、首先在Active上执行以下命令，手动备份整个name目录："><a href="#1、首先在Active上执行以下命令，手动备份整个name目录：" class="headerlink" title="1、首先在Active上执行以下命令，手动备份整个name目录："></a>1、首先在Active上执行以下命令，手动备份整个name目录：</h2><figure class="highlight vala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#关闭故障自动控制器</span></span><br><span class="line">hadoop-daemon.sh stop zkfs</span><br><span class="line"></span><br><span class="line"><span class="meta">#进入安全模式</span></span><br><span class="line">hdfs dfsadmin -safemode enter</span><br><span class="line"></span><br><span class="line"><span class="meta">#刷新editslog到fsimage</span></span><br><span class="line">hdfs dfsadmin -saveNamespace</span><br></pre></td></tr></table></figure>
-<h2 id="2、在Standby上备份整个name和journal目录，在执行："><a href="#2、在Standby上备份整个name和journal目录，在执行：" class="headerlink" title="2、在Standby上备份整个name和journal目录，在执行："></a>2、在Standby上备份整个name和journal目录，在执行：</h2><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hadoop-daemon<span class="selector-class">.sh</span> stop zkfc</span><br><span class="line">hdfs namenode -bootstrapStandby</span><br></pre></td></tr></table></figure>
-<p>若报以下错：<br><strong>FATAL ha.BootstrapStandby: Unable to read transaction ids 10-100 from the configured shared edits storage qjournal://1.1.1.1:8485;1.1.1.2:8485/sec-hdfs-cluster. Please copy these logs into the shared edits storage or call saveNamespace on the active node.<br>Error: Gap in transactions. Expected to be able to read up until at least txid 10 but unable to find any edit logs containing txid 10</strong></p>
-<p>需要将Active整个name目录复制到Standby，然后启动namenode：<br><figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scp -r /data/hadoop/name <span class="variable">$standby_ip</span><span class="symbol">:/data/hadoop</span></span><br><span class="line">hadoop-daemon.sh start namenode</span><br></pre></td></tr></table></figure></p>
 
-      
-    </div>
-    
-  </div>
-  
-    
-    <div class="copyright">
-        <p><span>本文标题:</span><a href="/2016/06/05/Hadoop重新做HA/">Hadoop重新做HA</a></p>
-        <p><span>文章作者:</span><a href="/" title="回到主页">Kelvin</a></p>
-        <p><span>发布时间:</span>2016-06-05, 00:00:00</p>
-        <p><span>最后更新:</span>2016-06-05, 22:20:51</p>
-        <p>
-            <span>原始链接:</span><a class="post-url" href="/2016/06/05/Hadoop重新做HA/" title="Hadoop重新做HA">https://kevin0431.github.io/2016/06/05/Hadoop重新做HA/</a>
-            <span class="copy-path" data-clipboard-text="原文: https://kevin0431.github.io/2016/06/05/Hadoop重新做HA/　　作者: Kelvin" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
-            <script> var clipboard = new Clipboard('.copy-path'); </script>
-        </p>
-        <p>
-            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
-        </p>
+          
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ambari/">Ambari</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HDP/">HDP</a></li></ul>
     </div>
 
-
-
-    <nav id="article-nav">
-        
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2016/06/20/自定义Ambari-Alerts/">
-                    自定义Ambari Alerts
-                </a>
-            </div>
-        
-        
-            <div id="article-nav-older" class="article-nav-title">
-                <a href="/2016/05/15/Centos安全加固总结/">
-                    CentOS安装加固总结
-                </a>
-            </div>
-        
-    </nav>
-
-  
-</article>
-
-    <div id="toc" class="toc-article">
-    <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1、首先在Active上执行以下命令，手动备份整个name目录："><span class="toc-number">1.</span> <span class="toc-text">1、首先在Active上执行以下命令，手动备份整个name目录：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2、在Standby上备份整个name和journal目录，在执行："><span class="toc-number">2.</span> <span class="toc-text">2、在Standby上备份整个name和journal目录，在执行：</span></a></li></ol>
-</div>
-<style>
-    .left-col .switch-btn,
-    .left-col .switch-area {
-        display: none;
-    }
-</style>
-
-<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
-
-<script>
-    yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
-</script>
-
-
-
-    
-<div class="share">
-    
-        <div class="bdsharebuttonbox">
-            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
-            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
-            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
-            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
-            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
-            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
-            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
         </div>
-        <script>
-            window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"Hadoop重新做HA　| Kelvin's Blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
-        </script>
-    
+        <div class="clearfix"></div>
+    </header>
+  </div>
+</article>
+  
+  
+    </div></section>
+  
 
     
-        <div class="addthis_sharing_toolbox"></div>
-    
-</div>
 
-
-
-
-
-
-
-    
-      <div class="duoshuo" id="comments">
-    <div id="comment-box" ></div>
-    <div class="ds-thread" data-thread-key="2016/06/05/Hadoop重新做HA/" data-title="Hadoop重新做HA" data-url="https://kevin0431.github.io/2016/06/05/Hadoop重新做HA/"></div>
-    <script>
-        var duoshuoQuery = {short_name:"kevin0431"};
-        var loadComment = function(){
-            var d = document, s = d.createElement('script');
-            s.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-            s.async = true; s.charset = 'UTF-8';
-            (d.head || d.body).appendChild(s);
-        }
-
-        
-    </script>
-    
-    <script> loadComment(); </script>
-
-</div>
-    
-
-
-
-
-    <div class="scroll" id="post-nav-button">
-        
-            <a href="/2016/06/20/自定义Ambari-Alerts/" title="上一篇: 自定义Ambari Alerts">
-                <i class="fa fa-angle-left"></i>
-            </a>
-        
-
-        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
-
-        
-            <a href="/2016/05/15/Centos安全加固总结/" title="下一篇: CentOS安装加固总结">
-                <i class="fa fa-angle-right"></i>
-            </a>
-        
-    </div>
-
-    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/07/10/测试Hive-INT数据类型/">测试Hive INT数据类型</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/20/自定义Ambari-Alerts/">自定义Ambari Alerts</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/05/Hadoop重新做HA/">Hadoop重新做HA</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/15/Centos安全加固总结/">CentOS安装加固总结</a></li></ul>
-
-
-
-
-    <script>
-        
-    </script>
 </div>
       <footer id="footer">
     <div class="outer">

@@ -14,19 +14,120 @@
 <meta name="author" content="Kelvin" />
 
 
-    
-    
+
+<meta name="description" content="测试HIVE如何处理NUMBER类型数据
 
 
-<meta name="description" content="Things need record">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Kelvin's Blog">
-<meta property="og:url" content="https://kevin0431.github.io/index.html">
+以TEST.NUMTEST为例
+
+
+
+相关资料：
+Oracle与Mysql数据类型对比
+HIVE官方支持的所有数据类型
+
+Environment
+
+
+Product
+Version
+
+
+
+
+HDP
+2.4.0.0-169
+
+
+Sqoop
+1.4.6.2.4.0.0-169
+
+
+Hive
+1.2.1000.2.4.0.0-169
+
+
+Oracle
+11g">
+<meta property="og:type" content="article">
+<meta property="og:title" content="测试Hive INT数据类型">
+<meta property="og:url" content="https://kevin0431.github.io/2016/07/10/测试Hive-INT数据类型/index.html">
 <meta property="og:site_name" content="Kelvin's Blog">
-<meta property="og:description" content="Things need record">
+<meta property="og:description" content="测试HIVE如何处理NUMBER类型数据
+
+
+以TEST.NUMTEST为例
+
+
+
+相关资料：
+Oracle与Mysql数据类型对比
+HIVE官方支持的所有数据类型
+
+Environment
+
+
+Product
+Version
+
+
+
+
+HDP
+2.4.0.0-169
+
+
+Sqoop
+1.4.6.2.4.0.0-169
+
+
+Hive
+1.2.1000.2.4.0.0-169
+
+
+Oracle
+11g">
+<meta property="og:image" content="http://i.imgur.com/Msu7zWZ.png">
+<meta property="og:image" content="http://i.imgur.com/kUxqVKH.png">
+<meta property="og:image" content="http://i.imgur.com/VouhmAR.png">
+<meta property="og:updated_time" content="2016-07-10T14:00:08.279Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Kelvin's Blog">
-<meta name="twitter:description" content="Things need record">
+<meta name="twitter:title" content="测试Hive INT数据类型">
+<meta name="twitter:description" content="测试HIVE如何处理NUMBER类型数据
+
+
+以TEST.NUMTEST为例
+
+
+
+相关资料：
+Oracle与Mysql数据类型对比
+HIVE官方支持的所有数据类型
+
+Environment
+
+
+Product
+Version
+
+
+
+
+HDP
+2.4.0.0-169
+
+
+Sqoop
+1.4.6.2.4.0.0-169
+
+
+Hive
+1.2.1000.2.4.0.0-169
+
+
+Oracle
+11g">
+<meta name="twitter:image" content="http://i.imgur.com/Msu7zWZ.png">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -54,13 +155,11 @@
 <link rel="stylesheet" href="/css/style.css">
 
 
-    <style> .article { opacity: 0;} </style>
-
 
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Kelvin&#39;s Blog</title>
+<title>测试Hive INT数据类型 | Kelvin&#39;s Blog</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -69,8 +168,8 @@
     var yiliaConfig = {
         fancybox: true,
         animate: true,
-        isHome: true,
-        isPost: false,
+        isHome: false,
+        isPost: true,
         isArchive: false,
         isTag: false,
         isCategory: false,
@@ -302,9 +401,7 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap">
-  
-    <article id="post-测试Hive-INT数据类型" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-测试Hive-INT数据类型" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
       <a href="/2016/07/10/测试Hive-INT数据类型/" class="article-date">
@@ -320,12 +417,23 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/07/10/测试Hive-INT数据类型/">测试Hive INT数据类型</a>
+    <h1 class="article-title" itemprop="name">
+      测试Hive INT数据类型
     </h1>
   
 
       </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hive/">Hive</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/INT/">INT</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
       
     
     <div class="article-entry" itemprop="articleBody">
@@ -648,346 +756,81 @@
       
     </div>
     
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hive/">Hive</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/INT/">INT</a></li></ul>
-    </div>
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
   </div>
   
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-自定义Ambari-Alerts" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/06/20/自定义Ambari-Alerts/" class="article-date">
-      <time datetime="2016-06-19T16:00:00.000Z" itemprop="datePublished">2016-06-20</time>
-</a>
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2016/07/10/测试Hive-INT数据类型/">测试Hive INT数据类型</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">Kelvin</a></p>
+        <p><span>发布时间:</span>2016-07-10, 00:00:00</p>
+        <p><span>最后更新:</span>2016-07-10, 22:00:08</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2016/07/10/测试Hive-INT数据类型/" title="测试Hive INT数据类型">https://kevin0431.github.io/2016/07/10/测试Hive-INT数据类型/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://kevin0431.github.io/2016/07/10/测试Hive-INT数据类型/　　作者: Kelvin" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
     </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
+
+
+
+    <nav id="article-nav">
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/06/20/自定义Ambari-Alerts/">自定义Ambari Alerts</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-        <h1 id="Update-thresholds-for-the-Ambari-alert"><a href="#Update-thresholds-for-the-Ambari-alert" class="headerlink" title="Update thresholds for the Ambari alert"></a>Update thresholds for the Ambari alert</h1><hr>
-<blockquote>
-<ul>
-<li>以Host Disk Usage为例</li>
-</ul>
-</blockquote>
-<h3 id="Environment"><a href="#Environment" class="headerlink" title="Environment"></a>Environment</h3><table>
-<thead>
-<tr>
-<th style="text-align:left">Product</th>
-<th style="text-align:left">Version</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">Ambari</td>
-<td style="text-align:left">2.2.1.0-169</td>
-</tr>
-<tr>
-<td style="text-align:left">HDP</td>
-<td style="text-align:left">2.4.0.0-169</td>
-</tr>
-</tbody>
-</table>
-<h3 id="Purpose"><a href="#Purpose" class="headerlink" title="Purpose"></a>Purpose</h3><p>修改Host Disk Usage warning value，默认50%</p>
-<h3 id="Procedure"><a href="#Procedure" class="headerlink" title="Procedure"></a>Procedure</h3><p>1、找到集群名字<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[root@gmjk-dsj8 ~]<span class="comment"># curl --user admin:admin http://localhost:8080/api/v1/clusters/</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"href"</span> : <span class="string">"http://localhost:8080/api/v1/clusters/"</span>,</span><br><span class="line">  <span class="string">"items"</span> : [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">"href"</span> : <span class="string">"http://localhost:8080/api/v1/clusters/test"</span>,</span><br><span class="line">      <span class="string">"Clusters"</span> : &#123;</span><br><span class="line">        <span class="string">"cluster_name"</span> : <span class="string">"test"</span>,</span><br><span class="line">        <span class="string">"version"</span> : <span class="string">"HDP-2.4"</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>2、输出集群所有配置<br><figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root<span class="variable">@gmjk</span>-dsj8 ~]<span class="comment"># curl --user admin:admin http://localhost:8080/api/v1/clusters/test &gt; /root/0620</span></span><br><span class="line">  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current</span><br><span class="line">                                 Dload  Upload   Total   Spent    Left  Speed</span><br><span class="line"><span class="number">100</span>  <span class="number">885</span>k    <span class="number">0</span>  <span class="number">885</span>k    <span class="number">0</span>     <span class="number">0</span>  <span class="number">2475</span>k      <span class="number">0</span> --<span class="symbol">:--</span><span class="symbol">:--</span> --<span class="symbol">:--</span><span class="symbol">:--</span> --<span class="symbol">:--</span><span class="symbol">:--</span> <span class="number">2488</span>k</span><br></pre></td></tr></table></figure></p>
-<p>3、找到Host Disk Usage配置，URL应该是<br><figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">http:</span>/<span class="regexp">/gmjk-dsj8:8080/api</span><span class="regexp">/v1/clusters</span><span class="regexp">/test/alert</span>_definitions/<span class="number">3</span></span><br></pre></td></tr></table></figure></p>
-<p>4、查看Host Disk Usage配置细节<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">[root@gmjk-dsj8 ~]<span class="comment"># curl -u admin:admin -X GET http://gmjk-dsj8:8080/api/v1/clusters/test/alert_definitions/3</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"href"</span> : <span class="string">"http://gmjk-dsj8:8080/api/v1/clusters/test/alert_definitions/3"</span>,</span><br><span class="line">  <span class="string">"AlertDefinition"</span> : &#123;</span><br><span class="line">    <span class="string">"cluster_name"</span> : <span class="string">"test"</span>,</span><br><span class="line">    <span class="string">"component_name"</span> : <span class="string">"AMBARI_AGENT"</span>,</span><br><span class="line">    <span class="string">"description"</span> : <span class="string">"This host-level alert is triggered if the amount of disk space used goes above specific thresholds. The default threshold values are 70% for WARNING and 80% for CRITICAL"</span>,</span><br><span class="line">    <span class="string">"enabled"</span> : <span class="literal">true</span>,</span><br><span class="line">    <span class="string">"id"</span> : 3,</span><br><span class="line">    <span class="string">"ignore_host"</span> : <span class="literal">false</span>,</span><br><span class="line">    <span class="string">"interval"</span> : 1,</span><br><span class="line">    <span class="string">"label"</span> : <span class="string">"Host Disk Usage"</span>,</span><br><span class="line">    <span class="string">"name"</span> : <span class="string">"ambari_agent_disk_usage"</span>,</span><br><span class="line">    <span class="string">"scope"</span> : <span class="string">"HOST"</span>,</span><br><span class="line">    <span class="string">"service_name"</span> : <span class="string">"AMBARI"</span>,</span><br><span class="line">    <span class="string">"source"</span> : &#123;</span><br><span class="line">      <span class="string">"parameters"</span> : [</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="string">"display_name"</span> : <span class="string">"Minimum Free Space"</span>,</span><br><span class="line">          <span class="string">"description"</span> : <span class="string">"The overall amount of free disk space left before an alert is triggered."</span>,</span><br><span class="line">          <span class="string">"name"</span> : <span class="string">"minimum.free.space"</span>,</span><br><span class="line">          <span class="string">"value"</span> : <span class="string">"5.0E9"</span>,</span><br><span class="line">          <span class="string">"type"</span> : <span class="string">"NUMERIC"</span>,</span><br><span class="line">          <span class="string">"units"</span> : <span class="string">"bytes"</span>,</span><br><span class="line">          <span class="string">"threshold"</span> : <span class="string">"WARNING"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="string">"display_name"</span> : <span class="string">"Warning"</span>,</span><br><span class="line">          <span class="string">"description"</span> : <span class="string">"The percent of disk space consumed before a warning is triggered."</span>,</span><br><span class="line">          <span class="string">"name"</span> : <span class="string">"percent.used.space.warning.threshold"</span>,</span><br><span class="line">          <span class="string">"value"</span> : <span class="string">"0.7"</span>,</span><br><span class="line">          <span class="string">"type"</span> : <span class="string">"PERCENT"</span>,</span><br><span class="line">          <span class="string">"units"</span> : <span class="string">"%"</span>,</span><br><span class="line">          <span class="string">"threshold"</span> : <span class="string">"WARNING"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="string">"display_name"</span> : <span class="string">"Critical"</span>,</span><br><span class="line">          <span class="string">"description"</span> : <span class="string">"The percent of disk space consumed before a critical alert is triggered."</span>,</span><br><span class="line">          <span class="string">"name"</span> : <span class="string">"percent.free.space.critical.threshold"</span>,</span><br><span class="line">          <span class="string">"value"</span> : <span class="string">"0.8"</span>,</span><br><span class="line">          <span class="string">"type"</span> : <span class="string">"PERCENT"</span>,</span><br><span class="line">          <span class="string">"units"</span> : <span class="string">"%"</span>,</span><br><span class="line">          <span class="string">"threshold"</span> : <span class="string">"CRITICAL"</span></span><br><span class="line">        &#125;</span><br><span class="line">      ],</span><br><span class="line">      <span class="string">"path"</span> : <span class="string">"alert_disk_space.py"</span>,</span><br><span class="line">      <span class="string">"type"</span> : <span class="string">"SCRIPT"</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>5、拷贝以上输出，去掉”href”行，修改需要的value和Description</p>
-<p>6、上传修改后的JSON，注意 PUT -d 后的单引号<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">[root@gmjk-dsj8 ~]<span class="comment"># curl -u admin:admin -H 'X-Requested-By:admin' -X PUT  -d '&#123;</span></span><br><span class="line">&gt;   <span class="string">"AlertDefinition"</span> : &#123;</span><br><span class="line">&gt;     <span class="string">"cluster_name"</span> : <span class="string">"test"</span>,</span><br><span class="line">&gt;     <span class="string">"component_name"</span> : <span class="string">"AMBARI_AGENT"</span>,</span><br><span class="line">&gt;     <span class="string">"description"</span> : <span class="string">"This host-level alert is triggered if the amount of disk space used goes above specific thresholds. The default threshold values are 70% for WARNING and 80% for CRITICAL"</span>,</span><br><span class="line">&gt;     <span class="string">"enabled"</span> : <span class="literal">true</span>,</span><br><span class="line">&gt;     <span class="string">"id"</span> : 3,</span><br><span class="line">&gt;     <span class="string">"ignore_host"</span> : <span class="literal">false</span>,</span><br><span class="line">&gt;     <span class="string">"interval"</span> : 1,</span><br><span class="line">&gt;     <span class="string">"label"</span> : <span class="string">"Host Disk Usage"</span>,</span><br><span class="line">&gt;     <span class="string">"name"</span> : <span class="string">"ambari_agent_disk_usage"</span>,</span><br><span class="line">&gt;     <span class="string">"scope"</span> : <span class="string">"HOST"</span>,</span><br><span class="line">&gt;     <span class="string">"service_name"</span> : <span class="string">"AMBARI"</span>,</span><br><span class="line">&gt;     <span class="string">"source"</span> : &#123;</span><br><span class="line">&gt;       <span class="string">"parameters"</span> : [</span><br><span class="line">&gt;         &#123;</span><br><span class="line">&gt;           <span class="string">"name"</span> : <span class="string">"minimum.free.space"</span>,</span><br><span class="line">&gt;           <span class="string">"display_name"</span> : <span class="string">"Minimum Free Space"</span>,</span><br><span class="line">&gt;           <span class="string">"units"</span> : <span class="string">"bytes"</span>,</span><br><span class="line">&gt;           <span class="string">"value"</span> : 5.0E9,</span><br><span class="line">&gt;           <span class="string">"description"</span> : <span class="string">"The overall amount of free disk space left before an alert is triggered."</span>,</span><br><span class="line">&gt;           <span class="string">"type"</span> : <span class="string">"NUMERIC"</span>,</span><br><span class="line">&gt;           <span class="string">"threshold"</span> : <span class="string">"WARNING"</span></span><br><span class="line">&gt;         &#125;,</span><br><span class="line">&gt;         &#123;</span><br><span class="line">&gt;           <span class="string">"name"</span> : <span class="string">"percent.used.space.warning.threshold"</span>,</span><br><span class="line">&gt;           <span class="string">"display_name"</span> : <span class="string">"Warning"</span>,</span><br><span class="line">&gt;           <span class="string">"units"</span> : <span class="string">"%"</span>,</span><br><span class="line">&gt;           <span class="string">"value"</span> : 0.7,</span><br><span class="line">&gt;           <span class="string">"description"</span> : <span class="string">"The percent of disk space consumed before a warning is triggered."</span>,</span><br><span class="line">&gt;           <span class="string">"type"</span> : <span class="string">"PERCENT"</span>,</span><br><span class="line">&gt;           <span class="string">"threshold"</span> : <span class="string">"WARNING"</span></span><br><span class="line">&gt;         &#125;,</span><br><span class="line">&gt;         &#123;</span><br><span class="line">&gt;           <span class="string">"name"</span> : <span class="string">"percent.free.space.critical.threshold"</span>,</span><br><span class="line">&gt;           <span class="string">"display_name"</span> : <span class="string">"Critical"</span>,</span><br><span class="line">&gt;           <span class="string">"units"</span> : <span class="string">"%"</span>,</span><br><span class="line">&gt;           <span class="string">"value"</span> : 0.8,</span><br><span class="line">&gt;           <span class="string">"description"</span> : <span class="string">"The percent of disk space consumed before a critical alert is triggered."</span>,</span><br><span class="line">&gt;           <span class="string">"type"</span> : <span class="string">"PERCENT"</span>,</span><br><span class="line">&gt;           <span class="string">"threshold"</span> : <span class="string">"CRITICAL"</span></span><br><span class="line">&gt;         &#125;</span><br><span class="line">&gt;       ],</span><br><span class="line">&gt;       <span class="string">"path"</span> : <span class="string">"alert_disk_space.py"</span>,</span><br><span class="line">&gt;       <span class="string">"type"</span> : <span class="string">"SCRIPT"</span></span><br><span class="line">&gt;     &#125;</span><br><span class="line">&gt;   &#125;</span><br><span class="line">&gt; &#125;<span class="string">' http://gmjk-dsj8:8080/api/v1/clusters/test/alert_definitions/3</span></span><br></pre></td></tr></table></figure></p>
-<p>7、检查修改后的监控项<br><img src="http://i.imgur.com/t9IlzDf.png" alt=""></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ambari/">Ambari</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HDP/">HDP</a></li></ul>
-    </div>
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-Hadoop重新做HA" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/06/05/Hadoop重新做HA/" class="article-date">
-      <time datetime="2016-06-04T16:00:00.000Z" itemprop="datePublished">2016-06-05</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/06/05/Hadoop重新做HA/">Hadoop重新做HA</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-        <h2 id="1、首先在Active上执行以下命令，手动备份整个name目录："><a href="#1、首先在Active上执行以下命令，手动备份整个name目录：" class="headerlink" title="1、首先在Active上执行以下命令，手动备份整个name目录："></a>1、首先在Active上执行以下命令，手动备份整个name目录：</h2><figure class="highlight vala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#关闭故障自动控制器</span></span><br><span class="line">hadoop-daemon.sh stop zkfs</span><br><span class="line"></span><br><span class="line"><span class="meta">#进入安全模式</span></span><br><span class="line">hdfs dfsadmin -safemode enter</span><br><span class="line"></span><br><span class="line"><span class="meta">#刷新editslog到fsimage</span></span><br><span class="line">hdfs dfsadmin -saveNamespace</span><br></pre></td></tr></table></figure>
-<h2 id="2、在Standby上备份整个name和journal目录，在执行："><a href="#2、在Standby上备份整个name和journal目录，在执行：" class="headerlink" title="2、在Standby上备份整个name和journal目录，在执行："></a>2、在Standby上备份整个name和journal目录，在执行：</h2><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hadoop-daemon<span class="selector-class">.sh</span> stop zkfc</span><br><span class="line">hdfs namenode -bootstrapStandby</span><br></pre></td></tr></table></figure>
-<p>若报以下错：<br><strong>FATAL ha.BootstrapStandby: Unable to read transaction ids 10-100 from the configured shared edits storage qjournal://1.1.1.1:8485;1.1.1.2:8485/sec-hdfs-cluster. Please copy these logs into the shared edits storage or call saveNamespace on the active node.<br>Error: Gap in transactions. Expected to be able to read up until at least txid 10 but unable to find any edit logs containing txid 10</strong></p>
-<p>需要将Active整个name目录复制到Standby，然后启动namenode：<br><figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scp -r /data/hadoop/name <span class="variable">$standby_ip</span><span class="symbol">:/data/hadoop</span></span><br><span class="line">hadoop-daemon.sh start namenode</span><br></pre></td></tr></table></figure></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hadoop/">Hadoop</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Namenode/">Namenode</a></li></ul>
-    </div>
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-Centos安全加固总结" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/05/15/Centos安全加固总结/" class="article-date">
-      <time datetime="2016-05-14T16:00:00.000Z" itemprop="datePublished">2016-05-15</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2016/06/20/自定义Ambari-Alerts/">
+                    自定义Ambari Alerts
+                </a>
+            </div>
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/05/15/Centos安全加固总结/">CentOS安装加固总结</a>
-    </h1>
-  
+    </nav>
 
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-        <blockquote>
-<ul>
-<li>要更新的软件：<br>bash，openssl，glibc</li>
-</ul>
-</blockquote>
-<h2 id="配置密码不允许重复次数和复杂度"><a href="#配置密码不允许重复次数和复杂度" class="headerlink" title="配置密码不允许重复次数和复杂度"></a>配置密码不允许重复次数和复杂度</h2><pre>
-#编辑/etc/pam.d/system-auth文件，找到以下行：
-password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_authtok
-#后面添加  remember=3  代表不允许使用之前3次用过的密码
-</pre>
-
-<pre>
-#找到以下行
-password    requisite     pam_cracklib.so try_first_pass retry=3 type=
-
-修改为：
-password    requisite     pam_cracklib.so try_first_pass retry=6 ucredit=-1 lcredit=-1 dcredit=-1 ocredit=-1
-#retry=N 重试N次后返回密码错误
-#difok=N 新密码必需与旧密码不同的位数
-#dcredit=N N>=0表示密码最多N个数字，反之最少N个数字
-#lcredit=N 小写字母个数
-#ucredit=N 小写字母个数
-#ccredit=N 小写字母个数
-#minclass=N 密码组成(大/小字母,数字,特殊字符)
-#root不受此限制，普通用户登录后改密码才受限制
-</pre>
-
-<h2 id="禁止root登录"><a href="#禁止root登录" class="headerlink" title="禁止root登录"></a>禁止root登录</h2><pre>
-#更改/etc/ssh/sshd_config，之后重启sshd
-PermitRootLogin yes
-改成：PermitRootLogin no
-</pre>
-
-<h2 id="修改密码长度和过期时间："><a href="#修改密码长度和过期时间：" class="headerlink" title="修改密码长度和过期时间："></a>修改密码长度和过期时间：</h2><pre>
-#改 /etc/login.defs
-PASS_MAX_DAYS   90
-PASS_MIN_DAYS   1
-PASS_MIN_LEN    9
-PASS_WARN_AGE   7
-解释：
-# PASS_MAX_DAYS   密码使用的最长期限
-# PASS_MIN_DAYS   密码允许更改的最短期限
-# PASS_MIN_LEN    能接受的密码最短长度
-# PASS_WARN_AGE   密码过期之前的提醒天数
-</pre>
-
-<h2 id="设置连续失败次数和失败锁定时间"><a href="#设置连续失败次数和失败锁定时间" class="headerlink" title="设置连续失败次数和失败锁定时间"></a>设置连续失败次数和失败锁定时间</h2><p>修改(/etc/pam.d/system-auth和/etc/pam.d/sshd)分别在开始位置加入以下内容：</p>
-<pre>
-auth    required    pam_tally2.so    deny=6    unlock_time=300    even_deny_root root_unlock_time=120
-#最大失败次数6次，超过6次锁定300s，root用户锁定120s
-#两个文件中"required pam_tally2.so deny"要删掉
-</pre>
-
-<h2 id="umask降权，设置历史命令数"><a href="#umask降权，设置历史命令数" class="headerlink" title="umask降权，设置历史命令数"></a>umask降权，设置历史命令数</h2><p>默认uid&gt;199的umask是022，uid&lt;199的umask是022，可以在/etc/profile里新加一行”umask 027”，修改HISSIZE=100，即最大历史命令是100</p>
-<h2 id="修改ssh-banner"><a href="#修改ssh-banner" class="headerlink" title="修改ssh banner"></a>修改ssh banner</h2><p>自定义banner文件：echo “Only Gomeholdings users can login” &gt; /etc/ssh/gomebanner<br>再修改/etc/ssh/sshd_config 新增”Banner /etc/ssh/gomebanner”</p>
-<h2 id="修改ssh访问控制"><a href="#修改ssh访问控制" class="headerlink" title="修改ssh访问控制"></a>修改ssh访问控制</h2><p>/etc/hosts.allow文件<br>如： sshd:10.35.0.0/255.255.0.0<br>禁止访问的文件 /etc/hosts.deny    sshd:all<br>hosts.allow文件优先</p>
-<h2 id="空闲超时退出"><a href="#空闲超时退出" class="headerlink" title="空闲超时退出"></a>空闲超时退出</h2><p>改/etc/profile 追加 TMOUT=300</p>
-<h2 id="su限制"><a href="#su限制" class="headerlink" title="su限制"></a>su限制</h2><p>修改/etc/login.defs 追加”SU_WHEEL_ONLY yes”<br>修改/etc/pam.d/su<br>将”auth        required    pam_wheel.so use_uid”取消注释<br>将要配置su权限的用户加到wheel组：<br>usermod -G wheel work</p>
-<h2 id="取消CTRL-ALT-DELETE"><a href="#取消CTRL-ALT-DELETE" class="headerlink" title="取消CTRL+ALT+DELETE"></a>取消CTRL+ALT+DELETE</h2><p>修改/etc/init/control-alt-delete.conf，注释掉以下内容：<br>start on control-alt-delete<br>exec /sbin/shutdown -r now “Control-Alt-Delete pressed”</p>
-<p>对于Centos7只需：rm -rf /usr/lib/systemd/ctrl-alt-del.target</p>
-<h2 id="修改motd，登陆系统后的提示信息"><a href="#修改motd，登陆系统后的提示信息" class="headerlink" title="修改motd，登陆系统后的提示信息"></a>修改motd，登陆系统后的提示信息</h2><p>echo “Illegal users are not allowed to login, Only authorized users can login” &gt; /etc/motd<br>当用显示器连接linux主机的时候，屏幕会显示系统版本等相关信息，可以将他取消掉，将/etc/issue和/etc/issue.net改名即可</p>
-<h2 id="禁用不用的用户和组"><a href="#禁用不用的用户和组" class="headerlink" title="禁用不用的用户和组"></a>禁用不用的用户和组</h2><pre>
-改/etc/passwd
-#adm:x:3:4:adm:/var/adm:/sbin/nologin
-#lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin
-#sync:x:5:0:sync:/sbin:/bin/sync
-#shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown
-#halt:x:7:0:halt:/sbin:/sbin/halt
-#uucp:x:10:14:uucp:/var/spool/uucp:/sbin/nologin
-#operator:x:11:0:operator:/root:/sbin/nologin
-#games:x:12:100:games:/usr/games:/sbin/nologin
-#gopher:x:13:30:gopher:/var/gopher:/sbin/nologin
-</pre>
-
-<pre>
-改/etc/group
-#adm:x:4:root,adm,daemon
-#lp:x:7:daemon,lp
-#uucp:x:14:uucp
-#games:x:20:
-#dip:x:40:
-</pre>
-
-<h2 id="禁用没用的服务"><a href="#禁用没用的服务" class="headerlink" title="禁用没用的服务"></a>禁用没用的服务</h2><pre>
-chkconfig acpid off
-chkconfig anacron off
-chkconfig auditd off
-chkconfig avahi-daemon off
-chkconfig autofs off
-chkconfig atd off
-chkconfig bluetooth off
-chkconfig cpuspeed off
-chkconfig cups off
-chkconfig firstboot off
-chkconfig gpm off
-chkconfig haldaemon off
-chkconfig hidd off
-chkconfig ip6tables off
-chkconfig iptables off
-chkconfig lvm2-monitor off
-chkconfig mcstrans off
-chkconfig mdmonitor off
-chkconfig messagebus off
-chkconfig nfslock off
-chkconfig pcscd off
-chkconfig rawdevices off
-chkconfig readahead_early off
-chkconfig restorecond off
-chkconfig rpcidmapd off
-chkconfig sendmail off
-chkconfig xfs off
-chkconfig yum-updatesd off
-chkconfig NetworkManager off
-</pre>
-
-
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OS/">OS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/安全/">安全</a></li></ul>
-    </div>
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
   
 </article>
 
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#测试HIVE如何处理NUMBER类型数据"><span class="toc-number">1.</span> <span class="toc-text">测试HIVE如何处理NUMBER类型数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Environment"><span class="toc-number">1.0.1.</span> <span class="toc-text">Environment</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Purpose"><span class="toc-number">1.0.2.</span> <span class="toc-text">Purpose</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Procedure"><span class="toc-number">1.0.3.</span> <span class="toc-text">Procedure</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Conclusion"><span class="toc-number">1.0.4.</span> <span class="toc-text">Conclusion</span></a></li></ol></li></ol></li></ol>
+</div>
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+</style>
+
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script>
+    yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+</script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"测试Hive INT数据类型　| Kelvin's Blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+        <div class="addthis_sharing_toolbox"></div>
+    
+</div>
 
 
 
@@ -995,9 +838,52 @@ chkconfig NetworkManager off
 
 
 
+    
+      <div class="duoshuo" id="comments">
+    <div id="comment-box" ></div>
+    <div class="ds-thread" data-thread-key="2016/07/10/测试Hive-INT数据类型/" data-title="测试Hive INT数据类型" data-url="https://kevin0431.github.io/2016/07/10/测试Hive-INT数据类型/"></div>
+    <script>
+        var duoshuoQuery = {short_name:"kevin0431"};
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+            s.async = true; s.charset = 'UTF-8';
+            (d.head || d.body).appendChild(s);
+        }
 
-  
-  
+        
+    </script>
+    
+    <script> loadComment(); </script>
+
+</div>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2016/06/20/自定义Ambari-Alerts/" title="下一篇: 自定义Ambari Alerts">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/07/10/测试Hive-INT数据类型/">测试Hive INT数据类型</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/20/自定义Ambari-Alerts/">自定义Ambari Alerts</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/05/Hadoop重新做HA/">Hadoop重新做HA</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/15/Centos安全加固总结/">CentOS安装加固总结</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
 </div>
       <footer id="footer">
     <div class="outer">

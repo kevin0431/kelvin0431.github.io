@@ -4,6 +4,363 @@
   
     
     <entry>
+      <title><![CDATA[测试Hive INT数据类型]]></title>
+      <url>https://kevin0431.github.io/2016/07/10/%E6%B5%8B%E8%AF%95Hive-INT%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</url>
+      <content type="html"><![CDATA[<h1 id="测试HIVE如何处理NUMBER类型数据"><a href="#测试HIVE如何处理NUMBER类型数据" class="headerlink" title="测试HIVE如何处理NUMBER类型数据"></a>测试HIVE如何处理NUMBER类型数据</h1><hr>
+<blockquote>
+<ul>
+<li>以TEST.NUMTEST为例</li>
+</ul>
+</blockquote>
+<ul>
+<li>相关资料：</li>
+<li><a href="https://docs.oracle.com/cd/E12151_01/doc.150/e12155/oracle_mysql_compared.htm#i1027526" target="_blank" rel="external">Oracle与Mysql数据类型对比</a></li>
+<li><a href="https://cwiki.apache.org/confluence/display/Hive/LanguageManual+Types#LanguageManualTypes-NumericTypes" target="_blank" rel="external">HIVE官方支持的所有数据类型</a></li>
+</ul>
+<h3 id="Environment"><a href="#Environment" class="headerlink" title="Environment"></a>Environment</h3><table>
+<thead>
+<tr>
+<th style="text-align:left">Product</th>
+<th style="text-align:left">Version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">HDP</td>
+<td style="text-align:left">2.4.0.0-169</td>
+</tr>
+<tr>
+<td style="text-align:left">Sqoop</td>
+<td style="text-align:left">1.4.6.2.4.0.0-169</td>
+</tr>
+<tr>
+<td style="text-align:left">Hive</td>
+<td style="text-align:left">1.2.1000.2.4.0.0-169</td>
+</tr>
+<tr>
+<td style="text-align:left">Oracle</td>
+<td style="text-align:left">11g.203</td>
+</tr>
+</tbody>
+</table>
+<p>TEST.NUMTEST表结构：<br><img src="http://i.imgur.com/Msu7zWZ.png" alt=""><br><img src="http://i.imgur.com/kUxqVKH.png" alt=""></p>
+<p>表内容：<br><img src="http://i.imgur.com/VouhmAR.png" alt=""></p>
+<h3 id="Purpose"><a href="#Purpose" class="headerlink" title="Purpose"></a>Purpose</h3><p>测试出Hive处理NUMBER类型的结果</p>
+<h3 id="Procedure"><a href="#Procedure" class="headerlink" title="Procedure"></a>Procedure</h3><p>1、不进行map-column-hive，直接导入，sqoop语句如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqoop import --connect <span class="string">'jdbc:oracle:thin:@10.143.90.12:1521:infodb'</span> --username bdc  --password bdc --table TEST.NUMTEST --hive-import --hive-database TEST --hive-table  numtest  --fields-terminated-by <span class="string">"\t"</span> --lines-terminated-by <span class="string">"\n"</span>    --hive-overwrite --delete-target-dir  --hive-drop-import-delims --null-string <span class="string">'\\N'</span> --null-non-string <span class="string">'\\N'</span>  -m 1</span><br></pre></td></tr></table></figure></p>
+<p>HIVE处理结果：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">hive&gt; desc NUMTEST;</span><br><span class="line">OK</span><br><span class="line">three                   double                                      </span><br><span class="line">nine                    double                                      </span><br><span class="line">ten                     double                                      </span><br><span class="line">fifteen                 double                                      </span><br><span class="line">nineteen                double                                      </span><br><span class="line">twentytwo               double                                      </span><br><span class="line">Time taken: 0.429 seconds, Fetched: 6 row(s)</span><br><span class="line">hive&gt; select * from NUMTEST;</span><br><span class="line">OK</span><br><span class="line">0.0 1.23456789E8    1.23456789E9    1.23456789123456E14 1.23456789123456794E18  1.2345678901234568E21</span><br><span class="line">10.0    NULL    NULL    NULL    NULL    NULL</span><br><span class="line">Time taken: 0.165 seconds, Fetched: 2 row(s)</span><br></pre></td></tr></table></figure></p>
+<p>2、转化规则如下：<br>–map-column-hive THREE=tinyint,FIFTEEN=bigint,TEN=int,NINE=int,TWENTYTWO=bigint,NINETEEN=bigint</p>
+<p>HIVE处理结果：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">hive&gt; desc NUMTEST;</span><br><span class="line">OK</span><br><span class="line">three                   tinyint                                     </span><br><span class="line">nine                    int                                         </span><br><span class="line">ten                     int                                         </span><br><span class="line">fifteen                 bigint                                      </span><br><span class="line">nineteen                bigint                                      </span><br><span class="line">twentytwo               bigint                                      </span><br><span class="line">Time taken: 0.427 seconds, Fetched: 6 row(s)</span><br><span class="line">hive&gt; select * from NUMTEST;</span><br><span class="line">OK</span><br><span class="line">0   123456789   1234567890  123456789123456 1234567891234567890 NULL</span><br><span class="line">10  NULL    NULL    NULL    NULL    NULL</span><br><span class="line">Time taken: 0.089 seconds, Fetched: 2 row(s)</span><br></pre></td></tr></table></figure></p>
+<p>3、单独测试，NUMBER(15)转为INT</p>
+<p>HIVE处理结果：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">hive&gt; desc NUMTEST;</span><br><span class="line">OK</span><br><span class="line">three                   tinyint                                     </span><br><span class="line">nine                    int                                         </span><br><span class="line">ten                     int                                         </span><br><span class="line">fifteen                 int                                         </span><br><span class="line">nineteen                bigint                                      </span><br><span class="line">twentytwo               bigint                                      </span><br><span class="line">Time taken: 0.424 seconds, Fetched: 6 row(s)</span><br><span class="line">hive&gt; select * from NUMTEST;</span><br><span class="line">OK</span><br><span class="line">0   123456789   1234567890  NULL    1234567891234567890 NULL</span><br><span class="line">10  NULL    NULL    NULL    NULL    NULL</span><br><span class="line">Time taken: 0.135 seconds, Fetched: 2 row(s)</span><br></pre></td></tr></table></figure></p>
+<p>4、单独测试，NUMBER(19)转为INT<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">hive&gt; desc NUMTEST;</span><br><span class="line">OK</span><br><span class="line">three                   tinyint                                     </span><br><span class="line">nine                    int                                         </span><br><span class="line">ten                     int                                         </span><br><span class="line">fifteen                 int                                         </span><br><span class="line">nineteen                int                                         </span><br><span class="line">twentytwo               bigint                                      </span><br><span class="line">Time taken: 0.437 seconds, Fetched: 6 row(s)</span><br><span class="line">hive&gt; select * from NUMTEST;</span><br><span class="line">OK</span><br><span class="line">0   123456789   1234567890  NULL    NULL    NULL</span><br><span class="line">10  NULL    NULL    NULL    NULL    NULL</span><br><span class="line">Time taken: 0.113 seconds, Fetched: 2 row(s)</span><br></pre></td></tr></table></figure></p>
+<p>5、测试NUMBER(22)转为string：<br>–map-column-hive THREE=tinyint,FIFTEEN=bigint,TEN=int,NINE=int,TWENTYTWO=string,NINETEEN=bigint</p>
+<p>HIVE结果：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">hive&gt; desc NUMTEST;</span><br><span class="line">OK</span><br><span class="line">three                   tinyint                                     </span><br><span class="line">nine                    int                                         </span><br><span class="line">ten                     int                                         </span><br><span class="line">fifteen                 bigint                                      </span><br><span class="line">nineteen                bigint                                      </span><br><span class="line">twentytwo               string                                      </span><br><span class="line">Time taken: 0.426 seconds, Fetched: 6 row(s)</span><br><span class="line">hive&gt; select * from NUMTEST;</span><br><span class="line">OK</span><br><span class="line">0   123456789   1234567890  123456789123456 1234567891234567890 1234567890123456789012</span><br><span class="line">10  NULL    NULL    NULL    NULL    NULL</span><br><span class="line">Time taken: 0.132 seconds, Fetched: 2 row(s)</span><br></pre></td></tr></table></figure></p>
+<p>6、测试NUMBER(11)转为INT和BIGINT</p>
+<p>INT的HIVE结果：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">hive&gt; desc NUMTEST;</span><br><span class="line">OK</span><br><span class="line">three                   tinyint                                     </span><br><span class="line">nine                    int                                         </span><br><span class="line">ten                     int                                         </span><br><span class="line">fifteen                 bigint                                      </span><br><span class="line">nineteen                bigint                                      </span><br><span class="line">twentytwo               string                                      </span><br><span class="line">eleven                  int                                         </span><br><span class="line">Time taken: 0.43 seconds, Fetched: 7 row(s)</span><br><span class="line">hive&gt; select * from NUMTEST;</span><br><span class="line">OK</span><br><span class="line">0   123456789   1234567890  123456789123456 1234567891234567890 1234567890123456789012  NULL</span><br><span class="line">10  NULL    NULL    NULL    NULL    NULL    NULL</span><br><span class="line">Time taken: 0.1 seconds, Fetched: 2 row(s)</span><br></pre></td></tr></table></figure></p>
+<p>BIGINT的HIVE结果：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">hive&gt; desc NUMTEST;</span><br><span class="line">OK</span><br><span class="line">three                   tinyint                                     </span><br><span class="line">nine                    int                                         </span><br><span class="line">ten                     int                                         </span><br><span class="line">fifteen                 bigint                                      </span><br><span class="line">nineteen                bigint                                      </span><br><span class="line">twentytwo               string                                      </span><br><span class="line">eleven                  bigint                                      </span><br><span class="line">Time taken: 0.426 seconds, Fetched: 7 row(s)</span><br><span class="line">hive&gt; select * from NUMTEST;</span><br><span class="line">OK</span><br><span class="line">0   123456789   1234567890  123456789123456 1234567891234567890 1234567890123456789012  12345678901</span><br><span class="line">10  NULL    NULL    NULL    NULL    NULL    NULL</span><br><span class="line">Time taken: 0.132 seconds, Fetched: 2 row(s)</span><br></pre></td></tr></table></figure></p>
+<p>7、测试NUMBER无长度，无精度类型，需要转成string</p>
+<p>Hive的结果：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">hive&gt; desc numtest;</span><br><span class="line">OK</span><br><span class="line">three                   tinyint                                     </span><br><span class="line">nine                    int                                         </span><br><span class="line">ten                     int                                         </span><br><span class="line">fifteen                 bigint                                      </span><br><span class="line">nineteen                bigint                                      </span><br><span class="line">twentytwo               string                                      </span><br><span class="line">eleven                  bigint                                      </span><br><span class="line">aa                      string                                      </span><br><span class="line">bb                      double                                      </span><br><span class="line">Time taken: 0.425 seconds, Fetched: 9 row(s)</span><br><span class="line">hive&gt; select * from  numtest;</span><br><span class="line">OK</span><br><span class="line">0   123456789   1234567890  123456789123456 1234567891234567890 1234567890123456789012  12345678901 123456789012345 1.234567812E7</span><br><span class="line">10  NULL    NULL    NULL    NULL    NULL    NULL    123.99  NULL</span><br><span class="line">Time taken: 0.176 seconds, Fetched: 2 row(s)</span><br></pre></td></tr></table></figure></p>
+<p>8、双精度double类型，转成string<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">hive&gt; desc numtest;</span><br><span class="line">OK</span><br><span class="line">three                   tinyint                                     </span><br><span class="line">nine                    int                                         </span><br><span class="line">ten                     int                                         </span><br><span class="line">fifteen                 bigint                                      </span><br><span class="line">nineteen                bigint                                      </span><br><span class="line">twentytwo               string                                      </span><br><span class="line">eleven                  bigint                                      </span><br><span class="line">aa                      string                                      </span><br><span class="line">bb                      string                                      </span><br><span class="line">Time taken: 0.553 seconds, Fetched: 9 row(s)</span><br><span class="line">hive&gt; select * from  numtest;</span><br><span class="line">OK</span><br><span class="line">0   123456789   1234567890  123456789123456 1234567891234567890 1234567890123456789012  12345678901 123456789012345 12345678.12</span><br><span class="line">10  NULL    NULL    NULL    NULL    NULL    NULL    123.99  NULL</span><br><span class="line">Time taken: 0.162 seconds, Fetched: 2 row(s)</span><br></pre></td></tr></table></figure></p>
+<h3 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h3><p><strong>HIVE转化Oracle的NUMBER数据类型结论如下：</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Orace数据类型</th>
+<th style="text-align:left">Hive数据类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">NUMBER(1)~NUMBER(3)</td>
+<td style="text-align:left">TINYINT</td>
+</tr>
+<tr>
+<td style="text-align:left">NUMBER(4)~NUMBER(10)</td>
+<td style="text-align:left">INT</td>
+</tr>
+<tr>
+<td style="text-align:left">NUMBER(11)~NUMBER(19)</td>
+<td style="text-align:left">BIGINT</td>
+</tr>
+<tr>
+<td style="text-align:left">NUMBER(20)以上</td>
+<td style="text-align:left">STRING</td>
+</tr>
+</tbody>
+</table>
+<p><strong>HIVE数据类型转换</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">所有类型</th>
+<th style="text-align:center">BOOLEAN</th>
+<th style="text-align:center">TINYINT</th>
+<th style="text-align:center">SMALLINT</th>
+<th style="text-align:center">INT</th>
+<th style="text-align:center">BIGINT</th>
+<th style="text-align:center">FLOAT</th>
+<th style="text-align:center">DOUBLE</th>
+<th style="text-align:center">DECIMAL</th>
+<th style="text-align:center">STRING</th>
+<th style="text-align:center">VARCHAR</th>
+<th style="text-align:center">TIMESTAMP</th>
+<th style="text-align:center">DATE</th>
+<th style="text-align:center">BINARY</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">BOOLEAN</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+</tr>
+<tr>
+<td style="text-align:left">TINYINT</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+</tr>
+<tr>
+<td style="text-align:left">SMALLINT</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+</tr>
+<tr>
+<td style="text-align:left">INT</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+</tr>
+<tr>
+<td style="text-align:left">BIGINT</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+</tr>
+<tr>
+<td style="text-align:left">FLOAT</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+</tr>
+<tr>
+<td style="text-align:left">DOUBLE</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+</tr>
+<tr>
+<td style="text-align:left">DECIMAL</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+</tr>
+<tr>
+<td style="text-align:left">STRING</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+</tr>
+<tr>
+<td style="text-align:left">VARCHAR</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+</tr>
+<tr>
+<td style="text-align:left">TIMESTAMP</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+</tr>
+<tr>
+<td style="text-align:left">DATE</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">false</td>
+</tr>
+<tr>
+<td style="text-align:left">BINARY</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[自定义Ambari Alerts]]></title>
+      <url>https://kevin0431.github.io/2016/06/20/%E8%87%AA%E5%AE%9A%E4%B9%89Ambari-Alerts/</url>
+      <content type="html"><![CDATA[<h1 id="Update-thresholds-for-the-Ambari-alert"><a href="#Update-thresholds-for-the-Ambari-alert" class="headerlink" title="Update thresholds for the Ambari alert"></a>Update thresholds for the Ambari alert</h1><hr>
+<blockquote>
+<ul>
+<li>以Host Disk Usage为例</li>
+</ul>
+</blockquote>
+<h3 id="Environment"><a href="#Environment" class="headerlink" title="Environment"></a>Environment</h3><table>
+<thead>
+<tr>
+<th style="text-align:left">Product</th>
+<th style="text-align:left">Version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Ambari</td>
+<td style="text-align:left">2.2.1.0-169</td>
+</tr>
+<tr>
+<td style="text-align:left">HDP</td>
+<td style="text-align:left">2.4.0.0-169</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Purpose"><a href="#Purpose" class="headerlink" title="Purpose"></a>Purpose</h3><p>修改Host Disk Usage warning value，默认50%</p>
+<h3 id="Procedure"><a href="#Procedure" class="headerlink" title="Procedure"></a>Procedure</h3><p>1、找到集群名字<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[root@gmjk-dsj8 ~]<span class="comment"># curl --user admin:admin http://localhost:8080/api/v1/clusters/</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"href"</span> : <span class="string">"http://localhost:8080/api/v1/clusters/"</span>,</span><br><span class="line">  <span class="string">"items"</span> : [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">"href"</span> : <span class="string">"http://localhost:8080/api/v1/clusters/test"</span>,</span><br><span class="line">      <span class="string">"Clusters"</span> : &#123;</span><br><span class="line">        <span class="string">"cluster_name"</span> : <span class="string">"test"</span>,</span><br><span class="line">        <span class="string">"version"</span> : <span class="string">"HDP-2.4"</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>2、输出集群所有配置<br><figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root<span class="variable">@gmjk</span>-dsj8 ~]<span class="comment"># curl --user admin:admin http://localhost:8080/api/v1/clusters/test &gt; /root/0620</span></span><br><span class="line">  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current</span><br><span class="line">                                 Dload  Upload   Total   Spent    Left  Speed</span><br><span class="line"><span class="number">100</span>  <span class="number">885</span>k    <span class="number">0</span>  <span class="number">885</span>k    <span class="number">0</span>     <span class="number">0</span>  <span class="number">2475</span>k      <span class="number">0</span> --<span class="symbol">:--</span><span class="symbol">:--</span> --<span class="symbol">:--</span><span class="symbol">:--</span> --<span class="symbol">:--</span><span class="symbol">:--</span> <span class="number">2488</span>k</span><br></pre></td></tr></table></figure></p>
+<p>3、找到Host Disk Usage配置，URL应该是<br><figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">http:</span>/<span class="regexp">/gmjk-dsj8:8080/api</span><span class="regexp">/v1/clusters</span><span class="regexp">/test/alert</span>_definitions/<span class="number">3</span></span><br></pre></td></tr></table></figure></p>
+<p>4、查看Host Disk Usage配置细节<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">[root@gmjk-dsj8 ~]<span class="comment"># curl -u admin:admin -X GET http://gmjk-dsj8:8080/api/v1/clusters/test/alert_definitions/3</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"href"</span> : <span class="string">"http://gmjk-dsj8:8080/api/v1/clusters/test/alert_definitions/3"</span>,</span><br><span class="line">  <span class="string">"AlertDefinition"</span> : &#123;</span><br><span class="line">    <span class="string">"cluster_name"</span> : <span class="string">"test"</span>,</span><br><span class="line">    <span class="string">"component_name"</span> : <span class="string">"AMBARI_AGENT"</span>,</span><br><span class="line">    <span class="string">"description"</span> : <span class="string">"This host-level alert is triggered if the amount of disk space used goes above specific thresholds. The default threshold values are 70% for WARNING and 80% for CRITICAL"</span>,</span><br><span class="line">    <span class="string">"enabled"</span> : <span class="literal">true</span>,</span><br><span class="line">    <span class="string">"id"</span> : 3,</span><br><span class="line">    <span class="string">"ignore_host"</span> : <span class="literal">false</span>,</span><br><span class="line">    <span class="string">"interval"</span> : 1,</span><br><span class="line">    <span class="string">"label"</span> : <span class="string">"Host Disk Usage"</span>,</span><br><span class="line">    <span class="string">"name"</span> : <span class="string">"ambari_agent_disk_usage"</span>,</span><br><span class="line">    <span class="string">"scope"</span> : <span class="string">"HOST"</span>,</span><br><span class="line">    <span class="string">"service_name"</span> : <span class="string">"AMBARI"</span>,</span><br><span class="line">    <span class="string">"source"</span> : &#123;</span><br><span class="line">      <span class="string">"parameters"</span> : [</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="string">"display_name"</span> : <span class="string">"Minimum Free Space"</span>,</span><br><span class="line">          <span class="string">"description"</span> : <span class="string">"The overall amount of free disk space left before an alert is triggered."</span>,</span><br><span class="line">          <span class="string">"name"</span> : <span class="string">"minimum.free.space"</span>,</span><br><span class="line">          <span class="string">"value"</span> : <span class="string">"5.0E9"</span>,</span><br><span class="line">          <span class="string">"type"</span> : <span class="string">"NUMERIC"</span>,</span><br><span class="line">          <span class="string">"units"</span> : <span class="string">"bytes"</span>,</span><br><span class="line">          <span class="string">"threshold"</span> : <span class="string">"WARNING"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="string">"display_name"</span> : <span class="string">"Warning"</span>,</span><br><span class="line">          <span class="string">"description"</span> : <span class="string">"The percent of disk space consumed before a warning is triggered."</span>,</span><br><span class="line">          <span class="string">"name"</span> : <span class="string">"percent.used.space.warning.threshold"</span>,</span><br><span class="line">          <span class="string">"value"</span> : <span class="string">"0.7"</span>,</span><br><span class="line">          <span class="string">"type"</span> : <span class="string">"PERCENT"</span>,</span><br><span class="line">          <span class="string">"units"</span> : <span class="string">"%"</span>,</span><br><span class="line">          <span class="string">"threshold"</span> : <span class="string">"WARNING"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="string">"display_name"</span> : <span class="string">"Critical"</span>,</span><br><span class="line">          <span class="string">"description"</span> : <span class="string">"The percent of disk space consumed before a critical alert is triggered."</span>,</span><br><span class="line">          <span class="string">"name"</span> : <span class="string">"percent.free.space.critical.threshold"</span>,</span><br><span class="line">          <span class="string">"value"</span> : <span class="string">"0.8"</span>,</span><br><span class="line">          <span class="string">"type"</span> : <span class="string">"PERCENT"</span>,</span><br><span class="line">          <span class="string">"units"</span> : <span class="string">"%"</span>,</span><br><span class="line">          <span class="string">"threshold"</span> : <span class="string">"CRITICAL"</span></span><br><span class="line">        &#125;</span><br><span class="line">      ],</span><br><span class="line">      <span class="string">"path"</span> : <span class="string">"alert_disk_space.py"</span>,</span><br><span class="line">      <span class="string">"type"</span> : <span class="string">"SCRIPT"</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>5、拷贝以上输出，去掉”href”行，修改需要的value和Description</p>
+<p>6、上传修改后的JSON，注意 PUT -d 后的单引号<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">[root@gmjk-dsj8 ~]<span class="comment"># curl -u admin:admin -H 'X-Requested-By:admin' -X PUT  -d '&#123;</span></span><br><span class="line">&gt;   <span class="string">"AlertDefinition"</span> : &#123;</span><br><span class="line">&gt;     <span class="string">"cluster_name"</span> : <span class="string">"test"</span>,</span><br><span class="line">&gt;     <span class="string">"component_name"</span> : <span class="string">"AMBARI_AGENT"</span>,</span><br><span class="line">&gt;     <span class="string">"description"</span> : <span class="string">"This host-level alert is triggered if the amount of disk space used goes above specific thresholds. The default threshold values are 70% for WARNING and 80% for CRITICAL"</span>,</span><br><span class="line">&gt;     <span class="string">"enabled"</span> : <span class="literal">true</span>,</span><br><span class="line">&gt;     <span class="string">"id"</span> : 3,</span><br><span class="line">&gt;     <span class="string">"ignore_host"</span> : <span class="literal">false</span>,</span><br><span class="line">&gt;     <span class="string">"interval"</span> : 1,</span><br><span class="line">&gt;     <span class="string">"label"</span> : <span class="string">"Host Disk Usage"</span>,</span><br><span class="line">&gt;     <span class="string">"name"</span> : <span class="string">"ambari_agent_disk_usage"</span>,</span><br><span class="line">&gt;     <span class="string">"scope"</span> : <span class="string">"HOST"</span>,</span><br><span class="line">&gt;     <span class="string">"service_name"</span> : <span class="string">"AMBARI"</span>,</span><br><span class="line">&gt;     <span class="string">"source"</span> : &#123;</span><br><span class="line">&gt;       <span class="string">"parameters"</span> : [</span><br><span class="line">&gt;         &#123;</span><br><span class="line">&gt;           <span class="string">"name"</span> : <span class="string">"minimum.free.space"</span>,</span><br><span class="line">&gt;           <span class="string">"display_name"</span> : <span class="string">"Minimum Free Space"</span>,</span><br><span class="line">&gt;           <span class="string">"units"</span> : <span class="string">"bytes"</span>,</span><br><span class="line">&gt;           <span class="string">"value"</span> : 5.0E9,</span><br><span class="line">&gt;           <span class="string">"description"</span> : <span class="string">"The overall amount of free disk space left before an alert is triggered."</span>,</span><br><span class="line">&gt;           <span class="string">"type"</span> : <span class="string">"NUMERIC"</span>,</span><br><span class="line">&gt;           <span class="string">"threshold"</span> : <span class="string">"WARNING"</span></span><br><span class="line">&gt;         &#125;,</span><br><span class="line">&gt;         &#123;</span><br><span class="line">&gt;           <span class="string">"name"</span> : <span class="string">"percent.used.space.warning.threshold"</span>,</span><br><span class="line">&gt;           <span class="string">"display_name"</span> : <span class="string">"Warning"</span>,</span><br><span class="line">&gt;           <span class="string">"units"</span> : <span class="string">"%"</span>,</span><br><span class="line">&gt;           <span class="string">"value"</span> : 0.7,</span><br><span class="line">&gt;           <span class="string">"description"</span> : <span class="string">"The percent of disk space consumed before a warning is triggered."</span>,</span><br><span class="line">&gt;           <span class="string">"type"</span> : <span class="string">"PERCENT"</span>,</span><br><span class="line">&gt;           <span class="string">"threshold"</span> : <span class="string">"WARNING"</span></span><br><span class="line">&gt;         &#125;,</span><br><span class="line">&gt;         &#123;</span><br><span class="line">&gt;           <span class="string">"name"</span> : <span class="string">"percent.free.space.critical.threshold"</span>,</span><br><span class="line">&gt;           <span class="string">"display_name"</span> : <span class="string">"Critical"</span>,</span><br><span class="line">&gt;           <span class="string">"units"</span> : <span class="string">"%"</span>,</span><br><span class="line">&gt;           <span class="string">"value"</span> : 0.8,</span><br><span class="line">&gt;           <span class="string">"description"</span> : <span class="string">"The percent of disk space consumed before a critical alert is triggered."</span>,</span><br><span class="line">&gt;           <span class="string">"type"</span> : <span class="string">"PERCENT"</span>,</span><br><span class="line">&gt;           <span class="string">"threshold"</span> : <span class="string">"CRITICAL"</span></span><br><span class="line">&gt;         &#125;</span><br><span class="line">&gt;       ],</span><br><span class="line">&gt;       <span class="string">"path"</span> : <span class="string">"alert_disk_space.py"</span>,</span><br><span class="line">&gt;       <span class="string">"type"</span> : <span class="string">"SCRIPT"</span></span><br><span class="line">&gt;     &#125;</span><br><span class="line">&gt;   &#125;</span><br><span class="line">&gt; &#125;<span class="string">' http://gmjk-dsj8:8080/api/v1/clusters/test/alert_definitions/3</span></span><br></pre></td></tr></table></figure></p>
+<p>7、检查修改后的监控项<br><img src="http://i.imgur.com/t9IlzDf.png" alt=""></p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Hadoop重新做HA]]></title>
       <url>https://kevin0431.github.io/2016/06/05/Hadoop%E9%87%8D%E6%96%B0%E5%81%9AHA/</url>
       <content type="html"><![CDATA[<h2 id="1、首先在Active上执行以下命令，手动备份整个name目录："><a href="#1、首先在Active上执行以下命令，手动备份整个name目录：" class="headerlink" title="1、首先在Active上执行以下命令，手动备份整个name目录："></a>1、首先在Active上执行以下命令，手动备份整个name目录：</h2><figure class="highlight vala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#关闭故障自动控制器</span></span><br><span class="line">hadoop-daemon.sh stop zkfs</span><br><span class="line"></span><br><span class="line"><span class="meta">#进入安全模式</span></span><br><span class="line">hdfs dfsadmin -safemode enter</span><br><span class="line"></span><br><span class="line"><span class="meta">#刷新editslog到fsimage</span></span><br><span class="line">hdfs dfsadmin -saveNamespace</span><br></pre></td></tr></table></figure>
